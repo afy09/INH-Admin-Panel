@@ -1,48 +1,8 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { LoadingSpiner } from "./icons/icon";
 
-const Campign = () => {
-  const [dataCampign, setDataCampign] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/campaign`);
-        const result = await response.json();
-
-        if (response.ok) {
-          setDataCampign(result.data);
-        } else {
-          throw new Error(result.message || "Failed to fetch data");
-        }
-      } catch (err: any) {
-        setError(err.message || "An error occurred");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center mt-3">
-        <LoadingSpiner />
-      </div>
-    );
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
+const Campign = ({ dataCampign }: { dataCampign: any }) => {
   return (
     <div className="border rounded-t-2xl">
       <div className="flex justify-between mt-3">
