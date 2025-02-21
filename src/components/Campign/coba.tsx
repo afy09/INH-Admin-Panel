@@ -124,7 +124,7 @@ const TambahCampagn = () => {
           {/* Target */}
           <div className="flex gap-3 w-full mt-6">
             <div className="w-full">
-              <label className="block mb-2 text-black-2 font-medium">Target Pengumpulan</label>
+              <label className="block mb-2 text-black-2 font-medium">Target Pengumpulan Dana</label>
               <input
                 type="number"
                 className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg"
