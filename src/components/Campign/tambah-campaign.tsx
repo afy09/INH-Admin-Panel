@@ -82,8 +82,8 @@ const TambahCampagn = () => {
                   Pilih Kategori
                 </option>
                 <option value="nasional">Nasional</option>
-                <option value="international">International</option>
-                <option value="sedekah_umum">Sedekah Umum</option>
+                <option value="internasional">International</option>
+                <option value="sedekah umum">Sedekah Umum</option>
                 <option value="palestina">Palestina</option>
               </select>
             </div>
