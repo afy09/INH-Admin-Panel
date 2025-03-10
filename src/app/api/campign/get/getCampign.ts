@@ -1,10 +1,11 @@
 import { DataCampign } from "@/models/DataCampign";
 
 export const fetchDataCampign = async (): Promise<DataCampign[]> => {
-  // Menggabungkan base URL dari environment variable dengan endpoint
   const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/campaign`;
 
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    cache: "no-store",
+  });
 
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);

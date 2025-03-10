@@ -1,7 +1,10 @@
 import { DataCampign } from "@/models/DataCampign";
 export const fetchDetailCampaign = async (id: number): Promise<DataCampign> => {
   const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/campaign/${id}`;
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    cache: "no-store",
+  });
+
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }

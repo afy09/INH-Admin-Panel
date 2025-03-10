@@ -17,6 +17,7 @@
     "jsvectormap": "^1.6.0",
     "lottie-react": "^2.4.1",
     "next": "^14.2.14",
+    "nprogress": "^0.2.0",
     "openai": "^4.83.0",
     "quill": "^2.0.3",
     "react": "^18.3.1",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/nprogress": "^0.2.3",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@typescript-eslint/parser": "^8.8.1",

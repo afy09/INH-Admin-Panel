@@ -9,14 +9,9 @@ import AlertDeleteProduk from "../Alert/alert_delete_campagin";
 
 const DetailCampaign = ({ detailCampaign }: { detailCampaign: any }) => {
   const { id } = useParams();
-  const [campaignDetail, setCampaignDetail] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
   const [isPopupOpenImage, setIsPopupOpenImage] = useState(false);
   const handleOpenPopupImage = () => setIsPopupOpenImage(true);
   const handleClosePopupImage = () => setIsPopupOpenImage(false);
-
   const [isPopupOpenDelete, setIsPopupOpenDelete] = useState(false);
   const handleOpenPopupDelete = () => setIsPopupOpenDelete(true);
   const handleClosePopupDelete = () => setIsPopupOpenDelete(false);
@@ -42,42 +37,6 @@ const DetailCampaign = ({ detailCampaign }: { detailCampaign: any }) => {
       setIsLoadingDelete(false);
     }
   };
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       setIsLoading(true);
-  //       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/campaign/${id}`);
-  //       const result = await response.json();
-
-  //       if (response.ok) {
-  //         setCampaignDetail(result.data);
-  //       } else {
-  //         throw new Error(result.message || "Failed to fetch data");
-  //       }
-  //     } catch (err: any) {
-  //       setError(err.message || "An error occurred");
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   if (id) {
-  //     fetchData();
-  //   }
-  // }, [id]);
-
-  // if (isLoading) {
-  //   return (
-  //     <div className="flex justify-center mt-3">
-  //       <LoadingSpiner />
-  //     </div>
-  //   );
-  // }
-
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
 
   return (
     <div className="border rounded-2xl px-7 py-7">

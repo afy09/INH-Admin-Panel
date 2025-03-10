@@ -6,7 +6,7 @@ export default async function page() {
   const dataCampign = await fetchDataCampign();
   return (
     <div>
-      <Campign />
+      <Campign dataCampign={dataCampign} />
     </div>
   );
 }
