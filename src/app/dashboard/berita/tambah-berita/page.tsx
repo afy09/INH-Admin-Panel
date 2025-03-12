@@ -1,15 +1,15 @@
 import React from "react";
-import TambahCampagn from "@/components/Campign/tambah-campaign";
 import { Metadata } from "next";
+import TambahBerita from "@/components/Berita/tambah-berita";
 
 export const metadata: Metadata = {
-  title: "Admin Panel INH | Tambah Campaign",
+  title: "Admin Panel INH | Tambah Berita",
 };
 
 export default function page() {
   return (
     <div>
-      <TambahCampagn />
+      <TambahBerita />
     </div>
   );
 }

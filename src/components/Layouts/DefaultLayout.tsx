@@ -20,14 +20,14 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
         {/* <!-- ===== Sidebar End ===== --> */}
 
         {/* <!-- ===== Content Area Start ===== --> */}
-        <div className="relative flex flex-1 flex-col lg:ml-72.5">
+        <div className="relative flex flex-1 flex-col lg:ml-70">
           {/* <!-- ===== Header Start ===== --> */}
           <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
           {/* <!-- ===== Header End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}
           <main>
-            <div className="mx-auto max-w-screen-2xl p-6 md:p-6 2xl:p-8">
+            <div className="mx-auto max-w-screen-2xl p-6 md:p-4 2xl:p-4">
               {children}
               {/* You can use the data prop here if needed */}
               {/* Example: <div>{JSON.stringify(data)}</div> */}

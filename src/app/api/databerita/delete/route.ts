@@ -6,7 +6,7 @@ export async function DELETE(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get("id");
 
-    const response = await axiosInstance.delete(`/api/campaign/${id}`, {
+    const response = await axiosInstance.delete(`/api/news/${id}`, {
       headers: {
         "Content-Type": "application/json",
       },

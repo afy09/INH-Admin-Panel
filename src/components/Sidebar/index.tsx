@@ -4,7 +4,15 @@ import Image from "next/image";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import ClickOutside from "@/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { IconMenuBeranda, IconMenuLogout, IconMenuPengguna, IconMenuPerusahaan, IconMenuProyek, IconMenuSaldo, IconMenuTransaksi, IconMenuUmum } from "./icons";
+import { IoNewspaperOutline } from "react-icons/io5";
+import { SiGooglecampaignmanager360 } from "react-icons/si";
+import { MdOutlineCampaign } from "react-icons/md";
+import { RiHome5Line } from "react-icons/ri";
+import { IoExitOutline } from "react-icons/io5";
+import { VscOrganization } from "react-icons/vsc";
+import { FaHandshake } from "react-icons/fa";
+import { GrProjects } from "react-icons/gr";
+import { FaDiagramProject } from "react-icons/fa6";
 import { removeToken } from "@/libs/axiosInstance";
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
@@ -19,32 +27,42 @@ const menuGroups = [
     name: "Menu Utama",
     menuItems: [
       {
-        icon: <IconMenuBeranda />,
-        label: "Berita",
+        icon: <GrProjects size={20} />,
+        label: "Banner Utama",
         route: "/dashboard",
       },
       {
-        icon: <IconMenuPerusahaan />,
+        icon: <SiGooglecampaignmanager360 size={20} />,
         label: "Campaign",
         route: "/dashboard/campign",
       },
       {
-        icon: <IconMenuSaldo />,
-        label: "Proyek",
+        icon: <IoNewspaperOutline size={20} />,
+        label: "Berita",
+        route: "/dashboard/berita",
+      },
+      {
+        icon: <FaDiagramProject size={20} />,
+        label: "Daftar Program",
         route: "/dashboard/saldo",
       },
       {
-        icon: <IconMenuTransaksi />,
-        label: "Program",
+        icon: <FaHandshake size={20} />,
+        label: "Kerja Sama",
+        route: "/dashboard/kerja-sama/media",
+      },
+      {
+        icon: <VscOrganization size={20} />,
+        label: "Struktur Organisasi",
         route: "/dashboard/transaksi",
       },
       {
-        icon: <IconMenuProyek />,
+        icon: <MdOutlineCampaign size={25} />,
         label: "Pengumuman",
-        route: "//dashboard/saldo",
+        route: "/dashboard/saldo",
       },
       {
-        icon: <IconMenuLogout />,
+        icon: <IoExitOutline size={25} />,
         label: "Logout",
         route: "/", // Tambahkan rute default
         action: "logout", // Tambahkan aksi logout
@@ -66,7 +84,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
-      <aside className={`fixed left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-boxdark duration-300 ease-linear dark:bg-boxdark lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <aside className={`fixed left-0 top-0 z-9999 flex h-screen w-70 flex-col overflow-y-hidden bg-boxdark duration-300 ease-linear dark:bg-boxdark lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
         {/* SIDEBAR HEADER */}
         <div className="flex items-center justify-between lg:mt-5 gap-2 px-6  py-5.5 lg:py-0">
           <Link href="/">
@@ -87,8 +105,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <li key={menuIndex}>
                       {menuItem.action === "logout" ? (
                         <button onClick={handleLogout} className="flex items-center text-bodydark1 px-4 py-2 gap-2  text-left w-full">
-                          {menuItem.icon}
-                          {menuItem.label}
+                          <span className="text-xl">{menuItem.icon}</span>
+                          <span className="text-base"> {menuItem.label}</span>
                         </button>
                       ) : (
                         <SidebarItem item={menuItem} pageName={pageName} setPageName={setPageName} />

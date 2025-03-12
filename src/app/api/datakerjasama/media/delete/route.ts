@@ -6,7 +6,7 @@ export async function DELETE(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get("id");
 
-    const response = await axiosInstance.delete(`/api/campaign/${id}`, {
+    const response = await axiosInstance.delete(`/api/mitra/${id}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -21,6 +21,6 @@ export async function DELETE(req: NextRequest) {
     );
   } catch (error) {
     console.error("Error uploading:", error);
-    return NextResponse.json({ message: "Error uploading" }, { status: 500 });
+    // return NextResponse.json({ message: "Error uploading" }, { status: 500 });
   }
 }
