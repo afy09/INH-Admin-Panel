@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { useParams } from "next/navigation";
 import { Close } from "@/components/Campign/icons/icon";
 import AlertDelete from "@/components/Alert/alert_delete";
 

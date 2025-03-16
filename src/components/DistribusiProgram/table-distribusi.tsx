@@ -1,16 +1,15 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa6";
 
-const TableBerita = ({ dataBerita }: { dataBerita: any }) => {
+const TableDistribusi = ({ dataProgram }: { dataProgram: any }) => {
   return (
     <div className="border rounded-t-2xl">
       <div className="flex justify-between mt-3">
-        <h1 className="text-black-2 px-4 py-3 font-semibold text-xl">Berita</h1>
+        <h1 className="text-black-2 px-4 py-3 font-semibold text-xl">Distribusi Program</h1>
 
-        <Link href="/dashboard/berita/tambah-berita">
+        <Link href="/dashboard/distribusi-program/tambah-program">
           <div className="px-4 py-3">
             <button className="bg-amber-400 px-6 py-2 text-white rounded-lg flex justify-center gap-2 items-center">
               <FaPlus />
@@ -20,7 +19,7 @@ const TableBerita = ({ dataBerita }: { dataBerita: any }) => {
         </Link>
       </div>
       <div className="w-full">
-        {dataBerita && dataBerita.length > 0 ? (
+        {dataProgram && dataProgram.length > 0 ? (
           <table className="w-full">
             <thead className="bg-amber-50 text-[#252525] font-light text-[14px] rounded-lg">
               <tr>
@@ -33,14 +32,14 @@ const TableBerita = ({ dataBerita }: { dataBerita: any }) => {
               </tr>
             </thead>
             <tbody>
-              {dataBerita.map((member: any, index: number) => (
+              {dataProgram.map((member: any, index: number) => (
                 <tr key={member.id} className="text-center text-black-2 text-[13px] border">
                   <td className="p-3">{index + 1}</td>
                   <td className="p-3 max-w-30 truncate cursor-pointer" title={member?.title}>
                     {member.title}
                   </td>
                   <td className="p-3 flex justify-center">
-                    <img src={member.image} alt={member.title} className="w-20 h-auto" />
+                    <img src={member.image} alt="distribusi" className="w-20 h-auto" />
                   </td>
                   <td className="p-3 capitalize">{member.author}</td>
                   <td className="p-3">{new Date(member.created_at).toLocaleDateString()}</td>
@@ -59,4 +58,4 @@ const TableBerita = ({ dataBerita }: { dataBerita: any }) => {
   );
 };
 
-export default TableBerita;
+export default TableDistribusi;

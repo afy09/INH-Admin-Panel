@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { LoadingSpiner } from "./icons/icon";
+import { FaPlus } from "react-icons/fa6";
 
 const Campign = ({ dataCampign }: { dataCampign: any }) => {
   // const [dataCampign, setDataCampign] = useState([]);
@@ -52,7 +53,10 @@ const Campign = ({ dataCampign }: { dataCampign: any }) => {
 
         <Link href="/dashboard/campign/tambah">
           <div className="px-4 py-3">
-            <button className="bg-amber-400 px-6 py-2 text-white rounded-lg">Tambah</button>
+            <button className="bg-amber-400 px-6 py-2 text-white rounded-lg flex justify-center gap-2 items-center">
+              <FaPlus />
+              Tambah
+            </button>
           </div>
         </Link>
       </div>

@@ -44,7 +44,7 @@ const menuGroups = [
       {
         icon: <FaDiagramProject size={20} />,
         label: "Daftar Program",
-        route: "/dashboard/saldo",
+        route: "/dashboard/distribusi-program",
       },
       {
         icon: <FaHandshake size={20} />,
