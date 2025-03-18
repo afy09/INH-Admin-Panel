@@ -23,46 +23,25 @@ const KontenDashboard: React.FC = () => {
           <IconBeranda />
         </div>
         <div className="w-full">
-          <h5 className=" text-sm md:text-xl font-bold text-primarydark">
-            Selamat datang di dashboard Admin
-          </h5>
-          <p className="leading-relaxed md:text-base text-[11px] font-light text-gray-500">
-            Mulai kelola semua transaksi dalam satu dashboard dengan mudah dan
-            efiesien.
-          </p>
+          <h5 className=" text-sm md:text-xl font-bold text-primarydark">Selamat datang di dashboard Admin</h5>
+          <p className="leading-relaxed md:text-base text-[11px] font-light text-gray-500">Mulai kelola semua transaksi dalam satu dashboard dengan mudah dan efiesien.</p>
         </div>
       </div>
       <div className="grid grid-cols-1  gap-4 md:grid-cols-3 md:gap-6 xl:grid-cols-3 2xl:gap-7.5">
-        <CardDataStats
-          title="Total Pengajuan Data"
-          total="300"
-          rate="0.43%"
-          levelUp
-        >
+        <CardDataStats title="Total Pengajuan Data" total="300" rate="0.43%" levelUp>
           <IconUsers />
         </CardDataStats>
 
-        <CardDataStats
-          title="Total Pengajuan Bisnis"
-          total="2.450"
-          rate="2.59%"
-          levelUp
-        >
+        <CardDataStats title="Total Pengajuan Bisnis" total="2.450" rate="2.59%" levelUp>
           <IconUsers />
         </CardDataStats>
-        <CardDataStats
-          title="Transaksi Hari Ini"
-          total="Rp. 500.000.000"
-          rate="0.95%"
-          levelDown
-        >
+        <CardDataStats title="Transaksi Hari Ini" total="Rp. 500.000.000" rate="0.95%" levelDown>
           <IconTransaksi />
         </CardDataStats>
       </div>
 
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         <ChartTwo />
-        <ChartThree />
       </div>
     </>
   );
