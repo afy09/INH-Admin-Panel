@@ -44,7 +44,7 @@ const TableDistribusi = ({ dataProgram }: { dataProgram: any }) => {
                   <td className="p-3 capitalize">{member.author}</td>
                   <td className="p-3">{new Date(member.created_at).toLocaleDateString()}</td>
                   <td className="p-3 text-amber-700 ">
-                    <Link href={`/dashboard/berita/detail/${member?.id}`}>Detail</Link>
+                    <Link href={`/dashboard/distribusi-program/detail/${member?.id}`}>Detail</Link>
                   </td>
                 </tr>
               ))}

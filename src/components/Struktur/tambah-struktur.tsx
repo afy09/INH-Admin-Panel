@@ -2,20 +2,17 @@
 import React, { useState } from "react";
 import { ArrowBack } from "@/components/Campign/icons/icon";
 import Link from "next/link";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { FaPaperPlane } from "react-icons/fa";
 import AlertSuccses from "../Alert/alert_sukses";
 
-const TambahProgram = () => {
-  const [title, settitle] = useState("");
-  const [author, setauthor] = useState("");
-  const [deskripsi, setdeskripsi] = useState("");
-  const [image, setimage] = useState<File | null>(null);
+const TambahStruktur = () => {
+  const [nama, setnama] = useState("");
+  const [jabatan, setjabatan] = useState("");
+  const [gambar, setgambar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
-  const isValid = title && author && deskripsi && image;
+  const isValid = nama && jabatan && gambar;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,16 +20,13 @@ const TambahProgram = () => {
 
     try {
       const formData = new FormData();
-      formData.append("title", title);
-      formData.append("author", author);
-
-      formData.append("deskripsi", deskripsi);
-
-      if (image) {
-        formData.append("image", image);
+      formData.append("nama", nama);
+      formData.append("jabatan", jabatan);
+      if (gambar) {
+        formData.append("gambar", gambar);
       }
 
-      const response = await fetch(`/api/dataProgram/create`, {
+      const response = await fetch(`/api/dataStruktur/create`, {
         method: "POST",
         body: formData,
       });
@@ -55,10 +49,10 @@ const TambahProgram = () => {
   return (
     <>
       <div className="border rounded-2xl px-7 py-7">
-        <Link href="/dashboard/distribusi-program">
+        <Link href="/dashboard/struktur">
           <div className="text-[22px] text-black-2 font-semibold flex gap-3 items-center mb-10">
             <ArrowBack />
-            Tambah Distribusi Program
+            Tambah Struktur Organisasi
           </div>
         </Link>
 
@@ -66,27 +60,21 @@ const TambahProgram = () => {
           {/* Judul dan Kategori */}
           <div className="flex gap-3 w-full">
             <div className="w-full">
-              <label className="block mb-2 text-black-2 font-medium">Judul Distribusi Program</label>
-              <input type="text" className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Nama Judul" value={title} onChange={(e) => settitle(e.target.value)} />
+              <label className="block mb-2 text-black-2 font-medium">Nama</label>
+              <input type="text" className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Nama Pengurus" value={nama} onChange={(e) => setnama(e.target.value)} />
             </div>
             <div className="w-full">
-              <label className="block mb-2 text-black-2 font-medium">Pengarang</label>
-              <input type="text" className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Pengarang" value={author} onChange={(e) => setauthor(e.target.value)} />
+              <label className="block mb-2 text-black-2 font-medium">Jabatan</label>
+              <input type="text" className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Jabatan" value={jabatan} onChange={(e) => setjabatan(e.target.value)} />
             </div>
           </div>
 
           {/* Upload Gambar */}
           <div className="mt-6">
-            <label className="block mb-2 text-black-2 font-medium">Upload Gambar</label>
+            <label className="block mb-2 text-black-2 font-medium">Upload Foto</label>
             <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
-              <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => setimage(e.target.files ? e.target.files[0] : null)} />
+              <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => setgambar(e.target.files ? e.target.files[0] : null)} />
             </div>
-          </div>
-          {/* Deskripsi */}
-
-          <div className="mt-6">
-            <label className="block mb-2 text-black-2 font-medium">Deskripsi</label>
-            <textarea value={deskripsi} onChange={(e) => setdeskripsi(e.target.value)} rows={4} className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg"></textarea>
           </div>
 
           {/* Button */}
@@ -103,4 +91,4 @@ const TambahProgram = () => {
   );
 };
 
-export default TambahProgram;
+export default TambahStruktur;

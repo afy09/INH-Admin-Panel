@@ -27,10 +27,15 @@ const menuGroups = [
     name: "Menu Utama",
     menuItems: [
       {
-        icon: <GrProjects size={20} />,
-        label: "Banner Utama",
+        icon: <RiHome5Line size={20} />,
+        label: "Beranda",
         route: "/dashboard",
       },
+      // {
+      //   icon: <GrProjects size={20} />,
+      //   label: "Banner Utama",
+      //   route: "/dashboard/banner-utama",
+      // },
       {
         icon: <SiGooglecampaignmanager360 size={20} />,
         label: "Campaign",
@@ -51,16 +56,17 @@ const menuGroups = [
         label: "Kerja Sama",
         route: "/dashboard/kerja-sama/media",
       },
+      // {
+      //   icon: <MdOutlineCampaign size={25} />,
+      //   label: "Pengumuman",
+      //   route: "/dashboard/saldo",
+      // },
       {
         icon: <VscOrganization size={20} />,
         label: "Struktur Organisasi",
-        route: "/dashboard/transaksi",
+        route: "/dashboard/struktur",
       },
-      {
-        icon: <MdOutlineCampaign size={25} />,
-        label: "Pengumuman",
-        route: "/dashboard/saldo",
-      },
+
       {
         icon: <IoExitOutline size={25} />,
         label: "Logout",

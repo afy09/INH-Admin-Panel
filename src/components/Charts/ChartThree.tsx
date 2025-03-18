@@ -8,10 +8,19 @@ const options: ApexOptions = {
     fontFamily: "Satoshi, sans-serif",
     type: "donut",
   },
-  colors: ["#464646", "#FAC0BB", "#F03524", "#991C1C"],
+  colors: ["#700e01", "#ffd22b", "#feb204"],
   legend: {
     show: false,
   },
+  labels: ["Campaign", "Berita", "Daftar Program"],
+  tooltip: {
+    y: {
+      formatter: function (val) {
+        return val.toString();
+      },
+    },
+  },
+
   plotOptions: {
     pie: {
       donut: {
@@ -27,12 +36,12 @@ const options: ApexOptions = {
   },
 };
 
-const ChartWithLegend: React.FC = () => {
-  const series = [30, 40, 20, 10]; // Data sesuai dengan nilai persentase
+const ChartWithLegend = ({ berandaCampaign, berandaBerita, berandaProgram }: { berandaCampaign: any; berandaBerita: any; berandaProgram: any }) => {
+  const series = [berandaCampaign?.total_campaigns || 0, berandaBerita?.total_news || 0, berandaProgram?.total_programs || 0];
 
   return (
-    <div className="col-span-12 rounded-xl border border-stroke bg-white p-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:p-8 xl:col-span-5">
-      <h5 className="text-base md:text-xl font-semibold text-black dark:text-white mb-4 text-center">Rata-Rata Metode Transaksi Mitra</h5>
+    <div className="col-span-12 rounded-xl border border-stroke bg-white p-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:p-8 xl:col-span-5 w-full">
+      <h5 className="text-base md:text-xl font-semibold text-black dark:text-white mb-4 text-center">Total Keseluruhan</h5>
 
       <div className="relative flex flex-col items-center justify-center">
         {/* Border abu-abu yang disesuaikan ukurannya agar tepat di dalam donut */}
@@ -43,30 +52,24 @@ const ChartWithLegend: React.FC = () => {
 
         {/* Legend di bawah chart */}
       </div>
-      <div className="flex justify-between flex-col gap-2 mt-4 text-sm">
+      <div className="flex justify-between flex-col gap-3 mt-4 text-sm">
         <div className="flex items-center ">
-          <span className="w-3 h-3 bg-[#464646] rounded-full mr-2"></span>
-          <span className="text-black dark:text-white md:text-lg">Payment</span>
+          <span className="w-3 h-3 bg-[#700e01] rounded-full mr-2"></span>
+          <span className="text-black dark:text-white md:text-lg">Campaign</span>
           <span className=" border-gray-100 border-[3px] rounded-full w-[40%] mx-auto"></span>
-          <span className="font-semibold ml-2 ms-auto md:text-lg">30%</span>
+          <span className="font-semibold ml-2 ms-auto md:text-lg">{berandaCampaign?.total_campaigns}</span>
         </div>
         <div className="flex items-center ">
-          <span className="w-3 h-3 bg-[#FAC0BB] rounded-full mr-2"></span>
-          <span className="text-black dark:text-white md:text-lg">Transfer</span>
+          <span className="w-3 h-3 bg-[#ffd22b] rounded-full mr-2"></span>
+          <span className="text-black dark:text-white md:text-lg">Berita</span>
           <span className=" border-gray-100 border-[3px] rounded-full w-[40%] mx-auto"></span>
-          <span className="font-semibold ml-2 ms-auto md:text-lg">40%</span>
+          <span className="font-semibold ml-2 ms-auto md:text-lg">{berandaBerita?.total_news}</span>
         </div>
         <div className="flex items-center">
-          <span className="w-3 h-3 bg-[#F03524] rounded-full mr-2"></span>
-          <span className="text-black dark:text-white md:text-lg">Top up</span>
+          <span className="w-3 h-3 bg-[#feb204] rounded-full mr-2"></span>
+          <span className="text-black dark:text-white md:text-lg">Daftar Program</span>
           <span className=" border-gray-100 border-[3px] rounded-full w-[40%] mx-auto"></span>
-          <span className="font-semibold ml-2 ms-auto md:text-lg">20%</span>
-        </div>
-        <div className="flex  items-center">
-          <span className="w-3 h-3 bg-[#991C1C] rounded-full mr-2"></span>
-          <span className="text-black dark:text-white md:text-lg">Scan QRIS</span>
-          <span className=" border-gray-100 border-[3px] rounded-full w-[40%] mx-auto"></span>
-          <span className="font-semibold ml-2 ms-auto md:text-lg">10%</span>
+          <span className="font-semibold ml-2 ms-auto md:text-lg">{berandaProgram?.total_programs}</span>
         </div>
       </div>
     </div>

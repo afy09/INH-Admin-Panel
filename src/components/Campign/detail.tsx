@@ -89,7 +89,7 @@ const DetailCampaign = ({ detailCampaign }: { detailCampaign: any }) => {
       </div>
 
       <div className="flex justify-end gap-3 mt-7">
-        <button className="bg-amber-500 px-6 py-2 rounded-lg text-white">Edit</button>
+        {/* <button className="bg-amber-500 px-6 py-2 rounded-lg text-white">Edit</button> */}
 
         <button onClick={handleOpenPopupDelete} className="bg-red-700 px-6 py-2 rounded-lg text-white">
           Hapus

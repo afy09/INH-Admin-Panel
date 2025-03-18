@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowBack, Close, LoadingSpiner } from "@/components/Campign/icons/icon";
-import AlertDeleteProduk from "../Alert/alert_delete_campagin";
+import AlertDeleteProduk from "../Alert/alert_delete_berita";
 
 const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
   const { id } = useParams();
@@ -19,7 +19,7 @@ const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
   const handleDelete = async () => {
     setIsLoadingDelete(true);
     try {
-      const response = await fetch(`/api/campign/delete?id=${id}`, {
+      const response = await fetch(`/api/databerita/delete?id=${id}`, {
         method: "DELETE",
       });
 
@@ -77,7 +77,7 @@ const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
       </div>
 
       <div className="flex justify-end gap-3 mt-7">
-        <button className="bg-amber-500 px-6 py-2 rounded-lg text-white">Edit</button>
+        {/* <button className="bg-amber-500 px-6 py-2 rounded-lg text-white">Edit</button> */}
 
         <button onClick={handleOpenPopupDelete} className="bg-red-700 px-6 py-2 rounded-lg text-white">
           Hapus

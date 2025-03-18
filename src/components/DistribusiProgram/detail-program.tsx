@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowBack, Close, LoadingSpiner } from "@/components/Campign/icons/icon";
-import AlertDeleteProduk from "../Alert/alert_delete_campagin";
+import AlertDeleteProduk from "../Alert/alert_delete_program";
 
 const DetailProgram = ({ detailProgram }: { detailProgram: any }) => {
   const { id } = useParams();
@@ -19,7 +19,7 @@ const DetailProgram = ({ detailProgram }: { detailProgram: any }) => {
   const handleDelete = async () => {
     setIsLoadingDelete(true);
     try {
-      const response = await fetch(`/api/campign/delete?id=${id}`, {
+      const response = await fetch(`/api/dataProgram/delete?id=${id}`, {
         method: "DELETE",
       });
 
@@ -77,7 +77,7 @@ const DetailProgram = ({ detailProgram }: { detailProgram: any }) => {
       </div>
 
       <div className="flex justify-end gap-3 mt-7">
-        <button className="bg-amber-500 px-6 py-2 rounded-lg text-white">Edit</button>
+        {/* <button className="bg-amber-500 px-6 py-2 rounded-lg text-white">Edit</button> */}
 
         <button onClick={handleOpenPopupDelete} className="bg-red-700 px-6 py-2 rounded-lg text-white">
           Hapus
@@ -107,7 +107,7 @@ const DetailProgram = ({ detailProgram }: { detailProgram: any }) => {
               <Close />
             </div>
             <h1 className="text-black-2 font-medium text-xl text-center mt-3">
-              Apakah anda yakin <br /> ingin menghapus Berita ini ?
+              Apakah anda yakin <br /> ingin menghapus program ini ?
             </h1>
 
             <div className="mt-6 flex justify-center gap-2">

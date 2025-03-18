@@ -19,10 +19,16 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
     if (pathname.includes("berita") && item.route && item.route.includes("berita")) {
       return true;
     }
+    if (pathname.includes("distribusi-program") && item.route && item.route.includes("distribusi-program")) {
+      return true;
+    }
     if (pathname.includes("kerja-sama") && item.route && item.route.includes("kerja-sama")) {
       return true;
     }
     if (pathname.includes("pengumuman") && item.route && item.route.includes("pengumuman")) {
+      return true;
+    }
+    if (pathname.includes("struktur") && item.route && item.route.includes("struktur")) {
       return true;
     }
     if (item.children) {
