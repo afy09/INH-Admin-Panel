@@ -64,6 +64,10 @@ const DetailProgram = ({ detailProgram }: { detailProgram: any }) => {
           <div className="w-50 font-semibold">Pengarang</div>
           <div className="text-[#4A4D4F] capitalize">{detailProgram?.author}</div>
         </div>
+        <div className="flex gap-7">
+          <div className="w-50 font-semibold">Kategori</div>
+          <div className="text-[#4A4D4F] capitalize">{detailProgram?.kategori}</div>
+        </div>
 
         <div className="flex gap-7">
           <div className="w-50 font-semibold">Tanggal Dibuat</div>

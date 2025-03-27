@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { LoadingSpiner } from "./icons/icon";
 import { FaPlus } from "react-icons/fa6";
+import NoDataImage from "../NoData/NoDataImage";
 
 const Campign = ({ dataCampign }: { dataCampign: any }) => {
   // const [dataCampign, setDataCampign] = useState([]);
@@ -91,7 +92,7 @@ const Campign = ({ dataCampign }: { dataCampign: any }) => {
             </tbody>
           </table>
         ) : (
-          <div>Tidak ada data</div>
+          <NoDataImage />
         )}
       </div>
     </div>

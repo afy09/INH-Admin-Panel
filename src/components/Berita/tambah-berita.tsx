@@ -11,11 +11,12 @@ const TambahBerita = () => {
   const [title, settitle] = useState("");
   const [author, setauthor] = useState("");
   const [deskripsi, setdeskripsi] = useState("");
+  const [kategori, setkategori] = useState("");
   const [image, setimage] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
-  const isValid = title && author && deskripsi && image;
+  const isValid = title && author && deskripsi && kategori && image;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ const TambahBerita = () => {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("author", author);
-
+      formData.append("kategori", kategori);
       formData.append("deskripsi", deskripsi);
 
       if (image) {
@@ -75,11 +76,17 @@ const TambahBerita = () => {
             </div>
           </div>
 
-          {/* Upload Gambar */}
-          <div className="mt-6">
-            <label className="block mb-2 text-black-2 font-medium">Upload Gambar</label>
-            <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
-              <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => setimage(e.target.files ? e.target.files[0] : null)} />
+          {/* Upload Gambar dan kategori */}
+          <div className="flex gap-3 w-full mt-6">
+            <div className="w-full">
+              <label className="block mb-2 text-black-2 font-medium">Kategori</label>
+              <input type="text" className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Kategori" value={kategori} onChange={(e) => setkategori(e.target.value)} />
+            </div>
+            <div className="w-full">
+              <label className="block mb-2 text-black-2 font-medium">Upload Gambar</label>
+              <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
+                <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => setimage(e.target.files ? e.target.files[0] : null)} />
+              </div>
             </div>
           </div>
           {/* Deskripsi */}

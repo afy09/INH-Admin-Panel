@@ -1,8 +1,8 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowBack, Close, LoadingSpiner } from "@/components/Campign/icons/icon";
+import { ArrowBack, Close } from "@/components/Campign/icons/icon";
 import AlertDeleteProduk from "../Alert/alert_delete_berita";
 
 const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
@@ -63,6 +63,11 @@ const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
         <div className="flex gap-7">
           <div className="w-50 font-semibold">Pengarang</div>
           <div className="text-[#4A4D4F] capitalize">{detailBerita?.author}</div>
+        </div>
+
+        <div className="flex gap-7">
+          <div className="w-50 font-semibold">Kategori</div>
+          <div className="text-[#4A4D4F] capitalize">{detailBerita?.kategori}</div>
         </div>
 
         <div className="flex gap-7">

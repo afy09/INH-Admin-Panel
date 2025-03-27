@@ -1,7 +1,11 @@
 import { DataBerita } from "@/models/DataBerita";
 
-export const fetchDataBerita = async (): Promise<DataBerita[]> => {
-  const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/news`;
+export const fetchDataBerita = async (query: { page?: number; limit?: number }): Promise<DataBerita> => {
+  const params = new URLSearchParams();
+  if (query.page) params.append("page", query.page.toString());
+  if (query.limit) params.append("limit", query.limit.toString());
+
+  const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/news?${params.toString()}`;
 
   const response = await fetch(url, {
     cache: "no-store",
@@ -12,6 +16,6 @@ export const fetchDataBerita = async (): Promise<DataBerita[]> => {
   }
 
   const data = await response.json();
-  console.log("API Response:", data.data);
-  return data.data;
+  console.log("API Response:", data);
+  return data;
 };

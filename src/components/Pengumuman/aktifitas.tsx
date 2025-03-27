@@ -1,22 +1,25 @@
 "use client";
 import React, { useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
-import { FaRegTrashAlt } from "react-icons/fa";
 import { useParams } from "next/navigation";
 import { Close } from "@/components/Campign/icons/icon";
-import AlertDelete from "@/components/Alert/alert_delete";
+import { FaRegEdit } from "react-icons/fa";
+import AlertUpdate from "../Alert/alert_update";
 
-const TableMedia = ({ dataMedia }: { dataMedia: any }) => {
-  const [isPopupOpenImage, setIsPopupOpenImage] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+const TableAktivitas = ({ dataAktivitas }: { dataAktivitas: any }) => {
+  const [isPopupOpenVideo, setIsPopupOpenVideo] = useState(false);
+  const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
+  const [url, seturl] = useState("");
 
-  const handleOpenPopupImage = (image: string) => {
-    setSelectedImage(image);
-    setIsPopupOpenImage(true);
+  const handleOpenPopupVideo = (url: string) => {
+    const videoId = url.split("v=")[1]?.split("&")[0]; // Ekstrak ID YouTube
+    setSelectedVideoId(videoId);
+    setIsPopupOpenVideo(true);
   };
-  const handleClosePopupImage = () => {
-    setSelectedImage(null);
-    setIsPopupOpenImage(false);
+
+  const handleClosePopupVideo = () => {
+    setSelectedVideoId(null);
+    setIsPopupOpenVideo(false);
   };
 
   const [selectedDeleteId, setSelectedDeleteId] = useState<string | null>(null);
@@ -29,25 +32,32 @@ const TableMedia = ({ dataMedia }: { dataMedia: any }) => {
   const [showPopupDelete, setShowPopupDelete] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
-  const handleDelete = async () => {
-    if (!selectedDeleteId) return;
+  const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!selectedDeleteId || !url) return;
+
     setIsLoadingDelete(true);
+
     try {
-      const response = await fetch(`/api/datakerjasama/mitra/delete?id=${selectedDeleteId}`, {
-        method: "DELETE",
+      const response = await fetch(`/api/dataPengumuman/aktivitas/update?id=${selectedDeleteId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url }), // Kirim data dalam format raw JSON
       });
 
       if (response.ok) {
         setIsPopupOpenDelete(false);
         setShowPopupDelete(true);
       } else {
-        console.error("Error:", await response.json());
+        const errorData = await response.json();
+        console.error("Error:", errorData);
       }
     } catch (error) {
-      console.error("Error delete event:", error);
+      console.error("Error update event:", error);
     } finally {
       setIsLoadingDelete(false);
-      setSelectedDeleteId(null);
     }
   };
 
@@ -55,37 +65,41 @@ const TableMedia = ({ dataMedia }: { dataMedia: any }) => {
     <>
       <div className="m-3 w-full">
         <div className="mt-5 grid grid-cols-4 gap-3 ps-1 pe-6">
-          {dataMedia?.map((media: any) => (
-            <div key={media.id} className="border rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <img src={media.image} alt={media.name} className="h-20 object-cover rounded-t-lg" />
+          {dataAktivitas?.map((media: any) => {
+            const videoId = new URL(media.url).searchParams.get("v");
 
-              <div className="mt-3">
-                <span className="text-black-2 font-semibold">{media.name}</span>
-              </div>
+            return (
+              <div key={media.id} className="border rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                {videoId ? <img src={`https://img.youtube.com/vi/${videoId}/0.jpg`} alt="Thumbnail YouTube" className="h-30 w-full object-cover rounded-t-lg" /> : <p className="text-red-500">Invalid URL</p>}
 
-              <div className="mt-2 w-full flex justify-center gap-1">
-                <div className="bg-primary rounded-lg py-2 w-full flex justify-center cursor-pointer" onClick={() => handleOpenPopupImage(media.image)}>
-                  <IoEyeOutline className="text-white" />
+                <div className="mt-3">
+                  <span className="text-black-2 font-semibold">{media.name}</span>
                 </div>
-                <div className="bg-red-700 rounded-lg py-2 w-full flex justify-center cursor-pointer" onClick={() => handleOpenPopupDelete(media.id)}>
-                  <FaRegTrashAlt className="text-white" />
+
+                <div className="mt-2 w-full flex justify-center gap-1">
+                  <div className="bg-primary rounded-lg py-2 w-full flex justify-center cursor-pointer" onClick={() => handleOpenPopupVideo(media.url)}>
+                    <IoEyeOutline className="text-white" />
+                  </div>
+                  <div className="bg-green-900 rounded-lg py-2 w-full flex justify-center cursor-pointer" onClick={() => handleOpenPopupDelete(media.id)}>
+                    <FaRegEdit className="text-white" />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
-      {isPopupOpenImage && selectedImage && (
+      {isPopupOpenVideo && selectedVideoId && (
         <div className="fixed inset-0 flex items-center justify-center bg-black-2 bg-opacity-70 z-999999">
-          <div className="bg-white text-black-2 p-4 rounded-lg shadow-lg w-[400px] xl:ms-55">
+          <div className="bg-white text-black-2 p-4 rounded-lg shadow-lg w-[600px] xl:ms-55">
             <div className="flex justify-end items-center mb-7">
-              <div onClick={handleClosePopupImage} className="cursor-pointer">
+              <div onClick={handleClosePopupVideo} className="cursor-pointer">
                 <Close />
               </div>
             </div>
             <div className="flex justify-center mb-3">
-              <img src={selectedImage} alt="Banner" width={300} height={200} className="rounded-lg" />
+              <iframe width="560" height="315" src={`https://www.youtube.com/embed/${selectedVideoId}`} allowFullScreen className="rounded-lg"></iframe>
             </div>
           </div>
         </div>
@@ -93,29 +107,32 @@ const TableMedia = ({ dataMedia }: { dataMedia: any }) => {
 
       {isPopupOpenDelete && (
         <div className="fixed inset-0 flex items-center justify-center bg-black-2 bg-opacity-70 z-999999">
-          <div className="bg-white p-8 rounded-2xl shadow-lg  ms-90 me-22">
+          <div className="bg-white p-8 rounded-2xl shadow-lg ms-90 me-22">
             <div className="flex justify-end -mt-3 cursor-pointer" onClick={handleClosePopupDelete}>
               <Close />
             </div>
-            <h1 className="text-black-2 font-medium text-xl text-center mt-3">
-              Apakah anda yakin <br /> ingin menghapus Media ini ?
-            </h1>
+            <form onSubmit={handleEdit} className="mt-2">
+              <div className="flex flex-col">
+                <label className="text-black-2 mb-1"> Link Youtube Terbaru</label>
+                <input type="text" className="rounded-lg outline-none px-4 py-3 border" placeholder="Masukkan Link Youtube Terbaru" value={url} onChange={(e) => seturl(e.target.value)} />
+              </div>
+              <div className="mt-6 flex justify-center gap-2">
+                <button className="px-12 py-2 border border-black-2 text-black-2 rounded-lg" onClick={handleClosePopupDelete}>
+                  Tidak
+                </button>
 
-            <div className="mt-6 flex justify-center gap-2">
-              <button className="px-12 py-2 bg-red-600 text-white rounded-lg" onClick={handleDelete}>
-                {isLoadingDelete ? `Menghapus` : `Hapus`}
-              </button>
-              <button className="px-12 py-2 border border-black-2 text-black-2 rounded-lg" onClick={handleClosePopupDelete}>
-                Tidak
-              </button>
-            </div>
+                <button type="submit" className="px-12 py-2 bg-primary text-white rounded-lg">
+                  {isLoadingDelete ? `Loading...` : `Simpan`}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
 
-      {showPopupDelete && <AlertDelete />}
+      {showPopupDelete && <AlertUpdate />}
     </>
   );
 };
 
-export default TableMedia;
+export default TableAktivitas;

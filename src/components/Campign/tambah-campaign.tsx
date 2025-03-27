@@ -11,6 +11,7 @@ const TambahCampagn = () => {
   const [title, settitle] = useState("");
   const [kategori, setkategori] = useState("");
   const [total, settotal] = useState("");
+  const [link, setlink] = useState("");
   const [deskripsi, setdeskripsi] = useState("");
   const [image, setimage] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +34,7 @@ const TambahCampagn = () => {
       formData.append("kategori", kategori);
       formData.append("total", total);
       formData.append("deskripsi", deskripsi);
+      formData.append("link", link);
 
       if (image) {
         formData.append("image", image);
@@ -77,15 +79,7 @@ const TambahCampagn = () => {
             </div>
             <div className="w-full">
               <label className="block mb-2 text-black-2 font-medium">Kategori</label>
-              <select className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" value={kategori} onChange={(e) => setkategori(e.target.value)}>
-                <option value="" disabled>
-                  Pilih Kategori
-                </option>
-                <option value="nasional">Nasional</option>
-                <option value="internasional">International</option>
-                <option value="sedekah umum">Sedekah Umum</option>
-                <option value="palestina">Palestina</option>
-              </select>
+              <input type="text" className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Nama Kategori" value={kategori} onChange={(e) => setkategori(e.target.value)} />
             </div>
           </div>
 
@@ -100,6 +94,11 @@ const TambahCampagn = () => {
                 value={total}
                 onChange={(e) => settotal(e.target.value)}
               />
+            </div>
+
+            <div className="w-full">
+              <label className="block mb-2 text-black-2 font-medium">Link Mayar</label>
+              <input type="text" className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Link Mayar" value={link} onChange={(e) => setlink(e.target.value)} />
             </div>
           </div>
 

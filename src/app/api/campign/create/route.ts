@@ -11,12 +11,14 @@ export async function POST(req: NextRequest) {
     const kategori = formData.get("kategori") as string;
     const total = formData.get("total") as string;
     const deskripsi = formData.get("deskripsi") as string;
+    const link = formData.get("deskripsi") as string;
     const image = formData.get("image") as File | null;
 
     const dataToSend = new FormData();
     dataToSend.append("title", title);
     dataToSend.append("kategori", kategori);
     dataToSend.append("total", total);
+    dataToSend.append("link", link);
     dataToSend.append("deskripsi", deskripsi);
     if (image) {
       dataToSend.append("image", image);

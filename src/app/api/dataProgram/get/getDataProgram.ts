@@ -1,7 +1,10 @@
 import { DataDistribusiProgram } from "@/models/DataProgram";
 
-export const fetchDataProgram = async (): Promise<DataDistribusiProgram[]> => {
-  const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/distribusi-program`;
+export const fetchDataProgram = async (query: { page?: number; limit?: number }): Promise<DataDistribusiProgram> => {
+  const params = new URLSearchParams();
+  if (query.page) params.append("page", query.page.toString());
+  if (query.limit) params.append("limit", query.limit.toString());
+  const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/distribusi-program?${params.toString()}`;
 
   const response = await fetch(url, {
     cache: "no-store",
@@ -12,6 +15,6 @@ export const fetchDataProgram = async (): Promise<DataDistribusiProgram[]> => {
   }
 
   const data = await response.json();
-  console.log("API Response:", data.data);
-  return data.data;
+  console.log("API Response:", data);
+  return data;
 };

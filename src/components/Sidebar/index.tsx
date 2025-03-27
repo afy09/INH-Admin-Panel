@@ -13,9 +13,11 @@ import { VscOrganization } from "react-icons/vsc";
 import { FaHandshake } from "react-icons/fa";
 import { GrProjects } from "react-icons/gr";
 import { FaDiagramProject } from "react-icons/fa6";
+import { FaCodePullRequest } from "react-icons/fa6";
 import { removeToken } from "@/libs/axiosInstance";
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
+import { useAdmin } from "@/app/context/dataAdmin/store";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -31,11 +33,11 @@ const menuGroups = [
         label: "Beranda",
         route: "/dashboard",
       },
-      // {
-      //   icon: <GrProjects size={20} />,
-      //   label: "Banner Utama",
-      //   route: "/dashboard/banner-utama",
-      // },
+      {
+        icon: <GrProjects size={20} />,
+        label: "Banner Utama",
+        route: "/dashboard/pamplet",
+      },
       {
         icon: <SiGooglecampaignmanager360 size={20} />,
         label: "Campaign",
@@ -52,15 +54,20 @@ const menuGroups = [
         route: "/dashboard/distribusi-program",
       },
       {
+        icon: <FaCodePullRequest size={20} />,
+        label: "Kode Tracking",
+        route: "/dashboard/kode-tracking",
+      },
+      {
         icon: <FaHandshake size={20} />,
         label: "Kerja Sama",
         route: "/dashboard/kerja-sama/media",
       },
-      // {
-      //   icon: <MdOutlineCampaign size={25} />,
-      //   label: "Pengumuman",
-      //   route: "/dashboard/saldo",
-      // },
+      {
+        icon: <MdOutlineCampaign size={25} />,
+        label: "Pengumuman",
+        route: "/dashboard/pengumuman/pengumuman",
+      },
       {
         icon: <VscOrganization size={20} />,
         label: "Struktur Organisasi",
@@ -80,6 +87,7 @@ const menuGroups = [
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const router = useRouter();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
+  const { dataAdmin } = useAdmin();
 
   const handleLogout = () => {
     removeToken();
@@ -87,6 +95,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     router.push("/");
     window.location.reload(); // Refresh halaman
   };
+
+  const filteredMenuGroups = menuGroups
+    .map((group) => ({
+      ...group,
+      menuItems: group.menuItems.filter((item) => {
+        if (!dataAdmin) return false;
+        if (dataAdmin.role === "super-admin") return true;
+        if (dataAdmin.role === "Media") return ["Beranda", "Berita", "Logout"].includes(item.label);
+        if (dataAdmin.role === "Fundraising") return ["Beranda", "Campaign", "Daftar Program", "Pengumuman", "Pengumuman", "Logout"].includes(item.label);
+        return false;
+      }),
+    }))
+    .filter((group) => group.menuItems.length > 0);
 
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
@@ -102,7 +123,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
           {/* Sidebar Menu */}
           <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
-            {menuGroups.map((group, groupIndex) => (
+            {filteredMenuGroups.map((group, groupIndex) => (
               <div key={groupIndex}>
                 <h3 className="mb-4 ml-4 text-[15px] text-gray-400">{group.name}</h3>
 

@@ -6,8 +6,8 @@ import { useState } from "react";
 
 const PageKerjaSama = () => {
   const tabs = [
-    { label: "Pengumuman", path: "/dashboard/pengumuman/new", id: 1 },
-    // { label: "Aktifitas Terbaru", path: "/dashboard/kerja-sama/lembaga", id: 2 },
+    { label: "Pengumuman", path: "/dashboard/pengumuman/pengumuman", id: 1 },
+    { label: "Aktivitas Terbaru", path: "/dashboard/pengumuman/aktivitas", id: 2 },
   ];
   const currentPath = usePathname();
   const [isClicked, setIsClicked] = useState(false);
