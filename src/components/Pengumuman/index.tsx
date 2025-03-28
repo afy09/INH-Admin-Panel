@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const PageKerjaSama = () => {
   const tabs = [
-    { label: "Pengumuman", path: "/dashboard/pengumuman/pengumuman", id: 1 },
+    { label: "Pengumuman", path: "/dashboard/pengumuman", id: 1 },
     { label: "Aktivitas Terbaru", path: "/dashboard/pengumuman/aktivitas", id: 2 },
   ];
   const currentPath = usePathname();

@@ -46,7 +46,7 @@ const TambahMedia = () => {
   return (
     <>
       <div className="border rounded-2xl px-7 py-7">
-        <Link href="/dashboard/kerja-sama/media">
+        <Link href="/dashboard/kerja-sama">
           <div className="text-[22px] text-black-2 font-semibold flex gap-3 items-center mb-10">
             <ArrowBack />
             Tambah Media

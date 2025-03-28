@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const PageKerjaSama = () => {
   const tabs = [
-    { label: "Mitra Media & Publikasi", path: "/dashboard/kerja-sama/media", id: 1 },
+    { label: "Mitra Media & Publikasi", path: "/dashboard/kerja-sama", id: 1 },
     { label: "Mitra Lembaga", path: "/dashboard/kerja-sama/lembaga", id: 2 },
   ];
   const currentPath = usePathname();
@@ -16,7 +16,7 @@ const PageKerjaSama = () => {
   };
 
   const addButtonConfig = {
-    "/dashboard/kerja-sama/media": { text: "Tambah Mitra Media", href: "/dashboard/kerja-sama/media/tambah-media" },
+    "/dashboard/kerja-sama": { text: "Tambah Mitra Media", href: "/dashboard/kerja-sama/media/tambah-media" },
     "/dashboard/kerja-sama/lembaga": { text: "Tambah Mitra Lembaga", href: "/dashboard/kerja-sama/lembaga/tambah-lembaga" },
   } as const;
 

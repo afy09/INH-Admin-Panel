@@ -61,12 +61,12 @@ const menuGroups = [
       {
         icon: <FaHandshake size={20} />,
         label: "Kerja Sama",
-        route: "/dashboard/kerja-sama/media",
+        route: "/dashboard/kerja-sama",
       },
       {
         icon: <MdOutlineCampaign size={25} />,
         label: "Pengumuman",
-        route: "/dashboard/pengumuman/pengumuman",
+        route: "/dashboard/pengumuman",
       },
       {
         icon: <VscOrganization size={20} />,
