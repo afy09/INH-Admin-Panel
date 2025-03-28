@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
@@ -16,7 +16,7 @@ import { FaDiagramProject } from "react-icons/fa6";
 import { FaCodePullRequest } from "react-icons/fa6";
 import { removeToken } from "@/libs/axiosInstance";
 import { deleteCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAdmin } from "@/app/context/dataAdmin/store";
 
 interface SidebarProps {
@@ -86,6 +86,8 @@ const menuGroups = [
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const [isChecking, setIsChecking] = useState(true);
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
   const { dataAdmin } = useAdmin();
 
@@ -108,6 +110,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       }),
     }))
     .filter((group) => group.menuItems.length > 0);
+
+  useEffect(() => {
+    const allowedRoutes = filteredMenuGroups.flatMap((group) => group.menuItems.map((item) => item.route));
+
+    if (!allowedRoutes.includes(pathname)) {
+      setTimeout(() => {
+        router.push("/dashboard"); // Redirect ke dashboard setelah 1 detik
+      }, 1000);
+    } else {
+      setIsChecking(false);
+    }
+  }, [pathname, filteredMenuGroups]);
 
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>

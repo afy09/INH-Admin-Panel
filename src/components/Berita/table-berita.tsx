@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import NoDataImage from "../NoData/NoDataImage";
 
 const TableBerita = ({ dataBerita, currentPage, lastPage }: { dataBerita: any; currentPage: number; lastPage: number }) => {
   const router = useRouter();
@@ -59,7 +60,7 @@ const TableBerita = ({ dataBerita, currentPage, lastPage }: { dataBerita: any; c
             </tbody>
           </table>
         ) : (
-          <div>Tidak ada data</div>
+          <NoDataImage />
         )}
       </div>
 

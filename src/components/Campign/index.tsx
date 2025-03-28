@@ -5,11 +5,18 @@ import Link from "next/link";
 import { LoadingSpiner } from "./icons/icon";
 import { FaPlus } from "react-icons/fa6";
 import NoDataImage from "../NoData/NoDataImage";
+import { useRouter } from "next/navigation";
 
-const Campign = ({ dataCampign }: { dataCampign: any }) => {
+const Campign = ({ dataCampign, currentPage, lastPage }: { dataCampign: any; currentPage: number; lastPage: number }) => {
   // const [dataCampign, setDataCampign] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const handlePageChange = (newPage: number) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("page", newPage.toString());
+    router.push(`?${urlParams.toString()}`);
+  };
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -95,6 +102,24 @@ const Campign = ({ dataCampign }: { dataCampign: any }) => {
           <NoDataImage />
         )}
       </div>
+
+      {dataCampign && dataCampign.length > 0 && (
+        <div className="flex justify-end items-center mt-6 mb-3 me-2 text-[12px]">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage <= 1}
+            className={`px-4 py-2 mx-1 rounded ${currentPage <= 1 ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-primary text-white cursor-pointer"}`}>
+            Prev
+          </button>
+          <span className="px-4 py-2 mx-1 text-primary border border-primary rounded">{`Page ${currentPage} of ${lastPage}`}</span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage >= lastPage}
+            className={`px-4 py-2 mx-1 rounded  ${currentPage >= lastPage ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-primary text-white cursor-pointer"}`}>
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };
