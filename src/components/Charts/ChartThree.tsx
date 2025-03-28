@@ -64,13 +64,13 @@ const ChartWithLegend = ({ berandaCampaign, berandaBerita, berandaProgram }: { b
           <span className="w-3 h-3 bg-[#ffd22b] rounded-full mr-2"></span>
           <span className="text-black dark:text-white md:text-lg">Berita</span>
           <span className=" border-gray-100 border-[3px] rounded-full w-[40%] mx-auto"></span>
-          <span className="font-semibold ml-2 ms-auto md:text-lg">{series[0]} %</span>
+          <span className="font-semibold ml-2 ms-auto md:text-lg">{series[1]} %</span>
         </div>
         <div className="flex items-center">
           <span className="w-3 h-3 bg-[#feb204] rounded-full mr-2"></span>
           <span className="text-black dark:text-white md:text-lg">Daftar Program</span>
           <span className=" border-gray-100 border-[3px] rounded-full w-[40%] mx-auto"></span>
-          <span className="font-semibold ml-2 ms-auto md:text-lg">{series[0]} %</span>
+          <span className="font-semibold ml-2 ms-auto md:text-lg">{series[2]} %</span>
         </div>
       </div>
     </div>
