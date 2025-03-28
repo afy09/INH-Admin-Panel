@@ -114,7 +114,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   useEffect(() => {
     const allowedRoutes = filteredMenuGroups.flatMap((group) => group.menuItems.map((item) => item.route));
 
-    if (!allowedRoutes.includes(pathname)) {
+    // Ambil parent route (hanya sampai level pertama setelah "/dashboard")
+    const pathSegments = pathname.split("/").filter(Boolean);
+    const parentRoute = pathSegments.length > 1 ? `/dashboard/${pathSegments[1]}` : pathname;
+
+    if (!allowedRoutes.includes(parentRoute)) {
       setTimeout(() => {
         router.push("/dashboard"); // Redirect ke dashboard setelah 1 detik
       }, 1000);
@@ -122,6 +126,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       setIsChecking(false);
     }
   }, [pathname, filteredMenuGroups]);
+
+  if (isChecking) {
+    return <div className="flex justify-center items-center h-screen text-lg font-semibold">Loading...</div>;
+  }
 
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
