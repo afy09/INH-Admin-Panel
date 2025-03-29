@@ -9,6 +9,6 @@ export const fetchDetailProgram = async (id: number): Promise<DataDistribusiProg
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   const data = await response.json();
-  console.log("API Response:", data);
-  return data;
+  console.log("API Response:", data.data);
+  return data.data;
 };

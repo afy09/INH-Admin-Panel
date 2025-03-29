@@ -64,13 +64,13 @@ const TableAktivitas = ({ dataAktivitas }: { dataAktivitas: any }) => {
   return (
     <>
       <div className="m-3 w-full">
-        <div className="mt-5 grid grid-cols-4 gap-3 ps-1 pe-6">
+        <div className="mt-5 grid grid-cols-3 gap-3 ps-1 pe-6">
           {dataAktivitas?.map((media: any) => {
             const videoId = new URL(media.url).searchParams.get("v");
 
             return (
               <div key={media.id} className="border rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                {videoId ? <img src={`https://img.youtube.com/vi/${videoId}/0.jpg`} alt="Thumbnail YouTube" className="h-30 w-full object-cover rounded-t-lg" /> : <p className="text-red-500">Invalid URL</p>}
+                {videoId ? <img src={`https://img.youtube.com/vi/${videoId}/0.jpg`} alt="Thumbnail YouTube" className="h-40 w-full object-cover rounded-t-lg" /> : <p className="text-red-500">Invalid URL</p>}
 
                 <div className="mt-3">
                   <span className="text-black-2 font-semibold">{media.name}</span>
