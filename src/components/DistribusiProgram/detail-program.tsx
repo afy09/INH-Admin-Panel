@@ -76,7 +76,7 @@ const DetailProgram = ({ detailProgram }: { detailProgram: any }) => {
 
         <div className="flex flex-col gap-3">
           <div className="w-50 font-semibold">Deskripsi :</div>
-          <div className="text-[#4A4D4F]">{detailProgram?.deskripsi}</div>
+          <div className="text-[#4A4D4F]" dangerouslySetInnerHTML={{ __html: detailProgram?.deskripsi }} />
         </div>
       </div>
 

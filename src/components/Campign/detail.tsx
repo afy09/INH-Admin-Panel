@@ -79,7 +79,7 @@ const DetailCampaign = ({ detailCampaign }: { detailCampaign: any }) => {
 
         <div className="flex gap-7">
           <div className="w-50 font-semibold">Link Mayar</div>
-          <div className="text-[#4A4D4F]">https//coba/coba</div>
+          <div className="text-[#4A4D4F]">{detailCampaign?.link}</div>
         </div>
 
         <div className="flex gap-7">

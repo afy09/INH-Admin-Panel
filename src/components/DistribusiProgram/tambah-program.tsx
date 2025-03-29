@@ -93,7 +93,7 @@ const TambahProgram = () => {
 
           <div className="mt-6">
             <label className="block mb-2 text-black-2 font-medium">Deskripsi</label>
-            <textarea value={deskripsi} onChange={(e) => setdeskripsi(e.target.value)} rows={4} className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg"></textarea>
+            <ReactQuill theme="snow" value={deskripsi} onChange={(content) => setdeskripsi(content)} className="  outline-none  w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Deskripsi Berita" />
           </div>
 
           {/* Button */}
