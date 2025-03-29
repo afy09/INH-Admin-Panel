@@ -47,7 +47,7 @@ const TambahBerita = () => {
       }
     } catch (error) {
       console.error("Error submitting data:", error);
-      alert("Terjadi kesalahan!");
+      alert("Gambar Tidak Boleh Lebih dari 1MB");
     } finally {
       setIsLoading(false);
     }
