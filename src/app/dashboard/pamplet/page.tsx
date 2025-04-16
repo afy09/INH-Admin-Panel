@@ -8,12 +8,14 @@ export const metadata: Metadata = {
   title: "Admin Panel INH | Pamplet",
 };
 
-export default async function page() {
-  const dataPamplet = await fetchDataPamplet();
+export default async function page({ searchParams }: { searchParams: { page?: string; limit?: string } }) {
+  const page = Number(searchParams.page);
+  const limit = Number(searchParams.limit);
+  const dataPamplet = await fetchDataPamplet({ page, limit });
   return (
     <div className="border rounded-lg">
       <PagePamplet />
-      <TablePamplet dataPamplet={dataPamplet} />
+      <TablePamplet dataPamplet={dataPamplet.data} currentPage={dataPamplet.current_page} lastPage={dataPamplet.last_page} />
     </div>
   );
 }

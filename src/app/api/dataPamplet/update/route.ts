@@ -11,14 +11,18 @@ export async function PUT(req: NextRequest) {
 
     const formData = await req.formData();
     const image = formData.get("image") as File | null;
+    const link = formData.get("link") as string;
 
     const dataToSend = new FormData();
 
+    if (link && link) {
+      dataToSend.append("link", link);
+    }
     if (image && image instanceof File) {
       dataToSend.append("image", image);
     }
 
-    const response = await axiosInstance.put(`/api/pengumuman/${id}`, dataToSend, {
+    const response = await axiosInstance.put(`/api/pamplets/${id}`, dataToSend, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

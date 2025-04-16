@@ -1,7 +1,10 @@
 import { DataPamplet } from "@/models/DataPengumuman";
 
-export const fetchDataPamplet = async (): Promise<DataPamplet[]> => {
-  const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/pamplets`;
+export const fetchDataPamplet = async (query: { page?: number; limit?: number }): Promise<DataPamplet> => {
+  const params = new URLSearchParams();
+  if (query.page) params.append("page", query.page.toString());
+  if (query.limit) params.append("limit", query.limit.toString());
+  const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/pamplets?${params.toString()}`;
 
   const response = await fetch(url, {
     cache: "no-store",
