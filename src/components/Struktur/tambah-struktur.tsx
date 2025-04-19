@@ -11,6 +11,8 @@ const TambahStruktur = () => {
   const [gambar, setgambar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const divisiList = ["Dewan dan Direksi", "Divisi Program", "Divisi Media Center", "Divisi Keuangan", "Divisi Digital Fundraising & IT", "Divisi Logistik"];
+  const [divisi, setDivisi] = useState("");
 
   const isValid = nama && jabatan && gambar;
 
@@ -69,11 +71,29 @@ const TambahStruktur = () => {
             </div>
           </div>
 
-          {/* Upload Gambar */}
-          <div className="mt-6">
-            <label className="block mb-2 text-black-2 font-medium">Upload Foto</label>
-            <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
-              <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => setgambar(e.target.files ? e.target.files[0] : null)} />
+          {/* Upload Gambar & divisi */}
+          <div className="flex gap-3 w-full mt-6">
+            <div className="w-full">
+              <label className="block mb-2 text-black-2 font-medium">Divisi</label>
+              <div className="relative">
+                <select value={divisi} onChange={(e) => setDivisi(e.target.value)} className="bg-gray-100 appearance-none outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg cursor-pointer">
+                  <option value="" disabled>
+                    Pilih Divisi
+                  </option>
+                  {divisiList.map((item, idx) => (
+                    <option key={idx} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="w-full">
+              <label className="block mb-2 text-black-2 font-medium">Upload Foto</label>
+              <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
+                <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => setgambar(e.target.files ? e.target.files[0] : null)} />
+              </div>
             </div>
           </div>
 

@@ -1,9 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowBack, Close } from "@/components/Campign/icons/icon";
 import AlertDeleteProduk from "../Alert/alert_delete_berita";
+import AlertUpdate from "../Alert/alert_update";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
   const { id } = useParams();
@@ -15,6 +18,21 @@ const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
   const handleClosePopupDelete = () => setIsPopupOpenDelete(false);
   const [showPopupDelete, setShowPopupDelete] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+
+  // EDIT
+  const [editData, setEditData] = useState({
+    title: detailBerita?.title || "",
+    kategori: detailBerita?.kategori || "",
+    author: detailBerita?.author || "",
+    deskripsi: detailBerita?.deskripsi || "",
+    image: null as File | null,
+  });
+  const [method, setMethod] = useState("put");
+  const [isPopupOpenEdit, setIsPopupOpenEdit] = useState(false);
+  const handleOpenPopupEdit = () => setIsPopupOpenEdit(true);
+  const handleClosePopupEdit = () => setIsPopupOpenEdit(false);
+  const [showPopupEdit, setShowPopupEdit] = useState(false);
+  const [isLoadingEdit, setIsLoadingEdit] = useState(false);
 
   const handleDelete = async () => {
     setIsLoadingDelete(true);
@@ -35,6 +53,67 @@ const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
       setIsLoadingDelete(false);
     }
   };
+
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setEditData({ ...editData, [name]: value });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setEditData({ ...editData, image: e.target.files[0] });
+    }
+  };
+
+  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoadingEdit(true);
+    const formData = new FormData();
+    formData.append("_method", method);
+    formData.append("title", editData.title);
+    formData.append("kategori", editData.kategori);
+    formData.append("author", editData.author);
+    formData.append("deskripsi", editData.deskripsi);
+    if (editData.image) {
+      formData.append("image", editData.image);
+    }
+
+    try {
+      const response = await fetch(`/api/databerita/update?id=${id}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        handleClosePopupEdit();
+        setShowPopupEdit(true);
+      } else {
+        console.error("Gagal update");
+      }
+    } catch (error) {
+      console.error("Error update:", error);
+    } finally {
+      setIsLoadingEdit(false);
+    }
+  };
+
+  const htmlToPlainText = (html: string) => {
+    return html
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n\n")
+      .replace(/<[^>]+>/g, "") // remove all other tags
+      .trim();
+  };
+
+  useEffect(() => {
+    if (detailBerita) {
+      const plainText = htmlToPlainText(detailBerita.deskripsi);
+      setEditData({
+        ...editData,
+        deskripsi: plainText,
+      });
+    }
+  }, [detailBerita]);
 
   return (
     <div className="border rounded-2xl px-7 py-7">
@@ -82,7 +161,9 @@ const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
       </div>
 
       <div className="flex justify-end gap-3 mt-7">
-        {/* <button className="bg-amber-500 px-6 py-2 rounded-lg text-white">Edit</button> */}
+        <button onClick={handleOpenPopupEdit} className="bg-primary px-6 py-2 rounded-lg text-white">
+          Edit
+        </button>
 
         <button onClick={handleOpenPopupDelete} className="bg-red-700 px-6 py-2 rounded-lg text-white">
           Hapus
@@ -127,7 +208,58 @@ const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
         </div>
       )}
 
+      {isPopupOpenEdit && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black-2 bg-opacity-70 z-999999">
+          <div className="bg-white p-8 rounded-2xl shadow-lg w-[500px] max-h-[90vh] overflow-auto xl:ms-60">
+            <div className="flex justify-between items-center mb-5">
+              <h2 className="text-xl font-semibold text-black-2">Edit Berita</h2>
+              <div onClick={handleClosePopupEdit} className="cursor-pointer">
+                <Close />
+              </div>
+            </div>
+
+            <form onSubmit={handleEditSubmit} className="flex flex-col gap-4 text-black-2 max-h-[350px] overflow-y-scroll">
+              <div className="flex flex-col gap-1">
+                <label className="font-medium">Judul</label>
+                <input name="title" value={editData.title} onChange={handleEditChange} placeholder="Judul" className="border px-3 py-2 rounded" />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="font-medium">Kategori</label>
+
+                <input name="kategori" value={editData.kategori} onChange={handleEditChange} placeholder="Kategori" className="border px-3 py-2 rounded" />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="font-medium">Pengarang</label>
+                <input name="author" type="text" value={editData.author} onChange={handleEditChange} placeholder="Target" className="border px-3 py-2 rounded" />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="font-medium">Deskripsi</label>
+                <ReactQuill theme="snow" value={editData.deskripsi} onChange={(value) => setEditData({ ...editData, deskripsi: value })} className="bg-white" />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="font-medium">Gambar</label>
+                <input type="file" onChange={handleFileChange} className="border px-3 py-2 rounded" />
+              </div>
+
+              <div className="flex justify-end mt-4 gap-2">
+                <button type="submit" className="bg-primary text-white px-4 py-2 rounded">
+                  {isLoadingEdit ? `Loading...` : `Simpan`}
+                </button>
+                <button className="border border-red-500 text-red-500 px-4 py-2 rounded" onClick={handleClosePopupEdit}>
+                  Batal
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {showPopupDelete && <AlertDeleteProduk />}
+      {showPopupEdit && <AlertUpdate />}
     </div>
   );
 };

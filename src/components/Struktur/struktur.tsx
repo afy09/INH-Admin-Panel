@@ -1,16 +1,24 @@
 "use client";
 import React, { useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { useParams } from "next/navigation";
 import { Close } from "@/components/Campign/icons/icon";
 import AlertDelete from "@/components/Alert/alert_delete";
 import Link from "next/link";
+import AlertUpdate from "../Alert/alert_update";
 
 const Struktur = ({ dataStruktur }: { dataStruktur: any }) => {
   const [isPopupOpenImage, setIsPopupOpenImage] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("Dewan & Direksi");
+  const [method, setMethod] = useState("put");
+  const [gambar, setgambar] = useState<File | null>(null);
+  const [nama, setnama] = useState<string>("");
+  const [jabatan, setjabatan] = useState<string>("");
+  const divisiList = ["Dewan dan Direksi", "Divisi Program", "Divisi Media Center", "Divisi Keuangan", "Divisi Digital Fundraising & IT", "Divisi Logistik"];
+  const [divisi, setDivisi] = useState("");
+
   const tabs = ["Dewan & Direksi", "Divisi Program", "Divisi Media Center", "Divisi Keuangan", "Divisi Digital Fundraising & IT", "Divisi Logistik"];
   const filterTeam = () => {
     return dataStruktur.filter((media: any) => {
@@ -72,13 +80,72 @@ const Struktur = ({ dataStruktur }: { dataStruktur: any }) => {
     }
   };
 
+  const [selectedEditId, setSelectedEditId] = useState<string | null>(null);
+  const [isPopupOpenEdit, setIsPopupOpenEdit] = useState(false);
+  const handleClosePopupEdit = () => setIsPopupOpenEdit(false);
+  const [showPopupEdit, setShowPopupEdit] = useState(false);
+  const [isLoadingEdit, setIsLoadingEdit] = useState(false);
+  const handleOpenPopupEdit = (id: string) => {
+    const selected = dataStruktur.find((item: any) => item.id === id);
+    if (selected) {
+      setnama(selected.nama || "");
+      setjabatan(selected.jabatan || "");
+    }
+    setSelectedEditId(id);
+    setIsPopupOpenEdit(true);
+  };
+
+  const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!selectedEditId) return;
+    setIsLoadingEdit(true);
+    try {
+      const formData = new FormData();
+      formData.append("_method", method);
+
+      if (nama) {
+        formData.append("nama", nama);
+      }
+
+      if (jabatan) {
+        formData.append("jabatan", jabatan);
+      }
+
+      if (gambar) {
+        formData.append("gambar", gambar);
+      }
+      const response = await fetch(`/api/dataStruktur/update?id=${selectedEditId}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        setIsPopupOpenEdit(false);
+        setShowPopupEdit(true);
+      } else {
+        console.error("Error:", await response.json());
+      }
+    } catch (error) {
+      console.error("Error delete event:", error);
+    } finally {
+      setIsLoadingEdit(false);
+    }
+  };
+
   return (
     <>
       <div className="m-3 w-full">
-        <div className="mt-4 flex justify-end ps-1 pe-6">
-          <Link href={"/dashboard/struktur/tambah-struktur"}>
-            <button className="border border-primary rounded-md px-6 py-2 text-sm font-medium text-primary">Tambah Struktur</button>
-          </Link>
+        <div className="flex justify-end items-center">
+          <div className="mt-4 flex justify-end ps-1 pe-6">
+            <Link href={"/dashboard/struktur/tambah-divisi"}>
+              <button className="border border-primary rounded-md px-6 py-2 text-sm font-medium text-primary">Tambah Divisi</button>
+            </Link>
+          </div>
+          <div className="mt-4 flex justify-end ps-1 pe-6">
+            <Link href={"/dashboard/struktur/tambah-struktur"}>
+              <button className="border border-primary rounded-md px-6 py-2 text-sm font-medium text-primary">Tambah Struktur</button>
+            </Link>
+          </div>
         </div>
         <div className="mt-7 grid grid-cols-3 gap-3 ps-1 pe-6">
           {tabs.map((tab) => (
@@ -104,6 +171,10 @@ const Struktur = ({ dataStruktur }: { dataStruktur: any }) => {
               <div className="mt-2 w-full flex justify-center gap-1">
                 <div className="bg-primary rounded-lg py-2 w-full flex justify-center cursor-pointer" onClick={() => handleOpenPopupImage(media.gambar)}>
                   <IoEyeOutline className="text-white" />
+                </div>
+
+                <div className="bg-green-900 rounded-lg py-2 w-full flex justify-center cursor-pointer" onClick={() => handleOpenPopupEdit(media.id)}>
+                  <FaRegEdit className="text-white" />
                 </div>
                 <div className="bg-red-700 rounded-lg py-2 w-full flex justify-center cursor-pointer" onClick={() => handleOpenPopupDelete(media.id)}>
                   <FaRegTrashAlt className="text-white" />
@@ -151,6 +222,59 @@ const Struktur = ({ dataStruktur }: { dataStruktur: any }) => {
         </div>
       )}
 
+      {isPopupOpenEdit && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black-2 bg-opacity-70 z-999999">
+          <div className="bg-white p-8 rounded-2xl shadow-lg ms-90 me-22">
+            <div className="flex justify-end -mt-3 cursor-pointer" onClick={handleClosePopupEdit}>
+              <Close />
+            </div>
+            <form onSubmit={handleEdit} className="mt-2">
+              <div className="flex flex-col">
+                <label className="block  mb-2 text-black-2 font-medium">Nama</label>
+                <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
+                  <input className="bg-gray-100 outline-none w-full" type="text" value={nama} onChange={(e) => setnama(e.target.value)} placeholder={dataStruktur.find((item: any) => item.id === selectedEditId)?.nama ?? ""} />
+                </div>
+
+                <label className="block mt-3 mb-2 text-black-2 font-medium">Jabatan</label>
+                <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
+                  <input className="bg-gray-100 outline-none w-full" type="text" value={jabatan} onChange={(e) => setjabatan(e.target.value)} placeholder={dataStruktur.find((item: any) => item.id === selectedEditId)?.jabatan ?? ""} />
+                </div>
+
+                <label className="block mt-3 mb-2 text-black-2 font-medium">Divisi</label>
+
+                <div className="relative">
+                  <select value={divisi} onChange={(e) => setDivisi(e.target.value)} className="bg-gray-100 appearance-none outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg cursor-pointer">
+                    <option value="" disabled>
+                      Pilih Divisi
+                    </option>
+                    {divisiList.map((item, idx) => (
+                      <option key={idx} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <label className="block  mt-3 mb-2 text-black-2 font-medium">Upload Gambar</label>
+                <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
+                  <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => setgambar(e.target.files ? e.target.files[0] : null)} />
+                </div>
+              </div>
+              <div className="mt-6 flex justify-center gap-2">
+                <button className="px-12 py-2 border border-black-2 text-black-2 rounded-lg" onClick={handleClosePopupEdit}>
+                  Tidak
+                </button>
+
+                <button type="submit" className="px-12 py-2 bg-primary text-white rounded-lg">
+                  {isLoadingEdit ? `Loading...` : `Simpan`}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showPopupEdit && <AlertUpdate />}
       {showPopupDelete && <AlertDelete />}
     </>
   );

@@ -1,18 +1,31 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
-import { FaRegEdit } from "react-icons/fa";
+import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { Close } from "@/components/Campign/icons/icon";
 import AlertUpdate from "../Alert/alert_update";
 import { useRouter } from "next/navigation";
+import AlertDelete from "../Alert/alert_delete";
 
 const TablePamplet = ({ dataPamplet, currentPage, lastPage }: { dataPamplet: any; currentPage: number; lastPage: number }) => {
   const [isPopupOpenImage, setIsPopupOpenImage] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [method, setMethod] = useState("put");
   const [image, setimage] = useState<File | null>(null);
-  const [link, setlink] = useState<string>("");
-  const [openInNewTab, setOpenInNewTab] = useState<boolean>(false);
+  const [link_banner, setlink_banner] = useState<string>("");
+  const [openInNewTab, setOpenInNewTab] = useState(false);
   const router = useRouter();
+
+  // DELETE
+  const [selectedDeleteId, setSelectedDeleteId] = useState<string | null>(null);
+  const [isPopupOpenDelete, setIsPopupOpenDelete] = useState(false);
+  const handleOpenPopupDelete = (id: string) => {
+    setSelectedDeleteId(id);
+    setIsPopupOpenDelete(true);
+  };
+  const handleClosePopupDelete = () => setIsPopupOpenDelete(false);
+  const [showPopupDelete, setShowPopupDelete] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
   const handleOpenPopupImage = (image: string) => {
     setSelectedImage(image);
@@ -28,7 +41,7 @@ const TablePamplet = ({ dataPamplet, currentPage, lastPage }: { dataPamplet: any
   const handleOpenPopupEdit = (id: string) => {
     const selected = dataPamplet.find((item: any) => item.id === id);
     if (selected) {
-      setlink(selected.link_pamflet || "");
+      setlink_banner(selected.link_banner || "");
       setOpenInNewTab(!!selected.open_in_new_tab); // Cast ke boolean
     }
     setSelectedEditId(id);
@@ -51,20 +64,17 @@ const TablePamplet = ({ dataPamplet, currentPage, lastPage }: { dataPamplet: any
     setIsLoadingEdit(true);
     try {
       const formData = new FormData();
-
-      if (openInNewTab) {
-        formData.append("open_in_new_tab", openInNewTab.toString());
-      }
-
-      if (link) {
-        formData.append("link", link);
+      formData.append("_method", method);
+      formData.append("valid", openInNewTab.toString());
+      if (link_banner) {
+        formData.append("link_banner", link_banner);
       }
 
       if (image) {
         formData.append("image", image);
       }
       const response = await fetch(`/api/dataPamplet/update?id=${selectedEditId}`, {
-        method: "PUT",
+        method: "POST",
         body: formData,
       });
 
@@ -81,6 +91,35 @@ const TablePamplet = ({ dataPamplet, currentPage, lastPage }: { dataPamplet: any
     }
   };
 
+  const handleDelete = async () => {
+    if (!selectedDeleteId) return;
+    setIsLoadingDelete(true);
+    try {
+      const response = await fetch(`/api/dataPamplet/delete?id=${selectedDeleteId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        setIsPopupOpenDelete(false);
+        setShowPopupDelete(true);
+      } else {
+        console.error("Error:", await response.json());
+      }
+    } catch (error) {
+      console.error("Error delete event:", error);
+    } finally {
+      setIsLoadingDelete(false);
+      setSelectedDeleteId(null);
+    }
+  };
+
+  useEffect(() => {
+    const selectedData = dataPamplet.find((item: any) => item.id === selectedEditId);
+    if (selectedData) {
+      setOpenInNewTab(selectedData.valid === "true");
+    }
+  }, [selectedEditId, dataPamplet]);
+
   return (
     <>
       <div className="m-3 w-full">
@@ -95,6 +134,10 @@ const TablePamplet = ({ dataPamplet, currentPage, lastPage }: { dataPamplet: any
                 </div>
                 <div className="bg-green-900 rounded-lg py-2 w-full flex justify-center cursor-pointer" onClick={() => handleOpenPopupEdit(media.id)}>
                   <FaRegEdit className="text-white" />
+                </div>
+
+                <div className="bg-red-700 rounded-lg py-2 w-full flex justify-center cursor-pointer" onClick={() => handleOpenPopupDelete(media.id)}>
+                  <FaRegTrashAlt className="text-white" />
                 </div>
               </div>
             </div>
@@ -148,9 +191,15 @@ const TablePamplet = ({ dataPamplet, currentPage, lastPage }: { dataPamplet: any
                   <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => setimage(e.target.files ? e.target.files[0] : null)} />
                 </div>
 
-                <label className="block mt-3 mb-2 text-black-2 font-medium">Link</label>
+                <label className="block mt-3 mb-2 text-black-2 font-medium">link</label>
                 <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
-                  <input className="bg-gray-100 outline-none w-full" type="text" value={link} onChange={(e) => setlink(e.target.value)} placeholder={dataPamplet.find((item: any) => item.id === selectedEditId)?.link ?? ""} />
+                  <input
+                    className="bg-gray-100 outline-none w-full"
+                    type="text"
+                    value={link_banner}
+                    onChange={(e) => setlink_banner(e.target.value)}
+                    placeholder={dataPamplet.find((item: any) => item.id === selectedEditId)?.link_banner ?? ""}
+                  />
                 </div>
 
                 <div className="mt-3 flex items-center gap-2">
@@ -173,6 +222,30 @@ const TablePamplet = ({ dataPamplet, currentPage, lastPage }: { dataPamplet: any
           </div>
         </div>
       )}
+
+      {isPopupOpenDelete && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black-2 bg-opacity-70 z-999999">
+          <div className="bg-white p-8 rounded-2xl shadow-lg  ms-90 me-22">
+            <div className="flex justify-end -mt-3 cursor-pointer" onClick={handleClosePopupDelete}>
+              <Close />
+            </div>
+            <h1 className="text-black-2 font-medium text-xl text-center mt-3">
+              Apakah anda yakin <br /> ingin menghapus Pamplet ini ?
+            </h1>
+
+            <div className="mt-6 flex justify-center gap-2">
+              <button className="px-12 py-2 bg-red-600 text-white rounded-lg" onClick={handleDelete}>
+                {isLoadingDelete ? `Menghapus....` : `Hapus`}
+              </button>
+              <button className="px-12 py-2 border border-black-2 text-black-2 rounded-lg" onClick={handleClosePopupDelete}>
+                Tidak
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showPopupDelete && <AlertDelete />}
 
       {showPopupEdit && <AlertUpdate />}
     </>

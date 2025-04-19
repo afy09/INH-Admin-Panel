@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { FaPlus } from "react-icons/fa";
 
 const PagePamplet = () => {
   const tabs = [{ label: "Pamplet", path: "/dashboard/pamplet", id: 1 }];
@@ -27,6 +28,15 @@ const PagePamplet = () => {
             </Link>
           ))}
         </div>
+
+        <Link href="/dashboard/pamplet/tambah">
+          <div className="px-4 py-3">
+            <button className="bg-amber-400 px-6 py-2 text-white rounded-lg flex justify-center gap-2 items-center">
+              <FaPlus />
+              Tambah
+            </button>
+          </div>
+        </Link>
       </div>
     </>
   );

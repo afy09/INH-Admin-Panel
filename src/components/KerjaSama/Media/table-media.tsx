@@ -1,14 +1,18 @@
 "use client";
 import React, { useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { useParams } from "next/navigation";
 import { Close } from "@/components/Campign/icons/icon";
 import AlertDelete from "@/components/Alert/alert_delete";
+import AlertUpdate from "@/components/Alert/alert_update";
 
 const TableMedia = ({ dataMedia }: { dataMedia: any }) => {
   const [isPopupOpenImage, setIsPopupOpenImage] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [method, setMethod] = useState("put");
+  const [image, setimage] = useState<File | null>(null);
+  const [name, setname] = useState<string>("");
 
   const handleOpenPopupImage = (image: string) => {
     setSelectedImage(image);
@@ -51,6 +55,53 @@ const TableMedia = ({ dataMedia }: { dataMedia: any }) => {
     }
   };
 
+  const [selectedEditId, setSelectedEditId] = useState<string | null>(null);
+  const [isPopupOpenEdit, setIsPopupOpenEdit] = useState(false);
+  const handleClosePopupEdit = () => setIsPopupOpenEdit(false);
+  const [showPopupEdit, setShowPopupEdit] = useState(false);
+  const [isLoadingEdit, setIsLoadingEdit] = useState(false);
+  const handleOpenPopupEdit = (id: string) => {
+    const selected = dataMedia.find((item: any) => item.id === id);
+    if (selected) {
+      setname(selected.name || "");
+    }
+    setSelectedEditId(id);
+    setIsPopupOpenEdit(true);
+  };
+
+  const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!selectedEditId) return;
+    setIsLoadingEdit(true);
+    try {
+      const formData = new FormData();
+      formData.append("_method", method);
+
+      if (name) {
+        formData.append("name", name);
+      }
+
+      if (image) {
+        formData.append("image", image);
+      }
+      const response = await fetch(`/api/datakerjasama/media/update?id=${selectedEditId}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        setIsPopupOpenEdit(false);
+        setShowPopupEdit(true);
+      } else {
+        console.error("Error:", await response.json());
+      }
+    } catch (error) {
+      console.error("Error delete event:", error);
+    } finally {
+      setIsLoadingEdit(false);
+    }
+  };
+
   return (
     <>
       <div className="m-3 w-full">
@@ -67,6 +118,11 @@ const TableMedia = ({ dataMedia }: { dataMedia: any }) => {
                 <div className="bg-primary rounded-lg py-2 w-full flex justify-center cursor-pointer" onClick={() => handleOpenPopupImage(media.image)}>
                   <IoEyeOutline className="text-white" />
                 </div>
+
+                <div className="bg-green-900 rounded-lg py-2 w-full flex justify-center cursor-pointer" onClick={() => handleOpenPopupEdit(media.id)}>
+                  <FaRegEdit className="text-white" />
+                </div>
+
                 <div className="bg-red-700 rounded-lg py-2 w-full flex justify-center cursor-pointer" onClick={() => handleOpenPopupDelete(media.id)}>
                   <FaRegTrashAlt className="text-white" />
                 </div>
@@ -113,7 +169,39 @@ const TableMedia = ({ dataMedia }: { dataMedia: any }) => {
         </div>
       )}
 
+      {isPopupOpenEdit && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black-2 bg-opacity-70 z-999999">
+          <div className="bg-white p-8 rounded-2xl shadow-lg ms-90 me-22">
+            <div className="flex justify-end -mt-3 cursor-pointer" onClick={handleClosePopupEdit}>
+              <Close />
+            </div>
+            <form onSubmit={handleEdit} className="mt-2">
+              <div className="flex flex-col">
+                <label className="block  mb-2 text-black-2 font-medium">Nama</label>
+                <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
+                  <input className="bg-gray-100 outline-none w-full" type="text" value={name} onChange={(e) => setname(e.target.value)} placeholder={dataMedia.find((item: any) => item.id === selectedEditId)?.link_banner ?? ""} />
+                </div>
+                <label className="block  mt-3 mb-2 text-black-2 font-medium">Upload Gambar</label>
+                <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
+                  <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => setimage(e.target.files ? e.target.files[0] : null)} />
+                </div>
+              </div>
+              <div className="mt-6 flex justify-center gap-2">
+                <button className="px-12 py-2 border border-black-2 text-black-2 rounded-lg" onClick={handleClosePopupEdit}>
+                  Tidak
+                </button>
+
+                <button type="submit" className="px-12 py-2 bg-primary text-white rounded-lg">
+                  {isLoadingEdit ? `Loading...` : `Simpan`}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {showPopupDelete && <AlertDelete />}
+      {showPopupEdit && <AlertUpdate />}
     </>
   );
 };

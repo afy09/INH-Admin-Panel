@@ -2,7 +2,7 @@ import axiosInstance from "@/libs/axiosInstance";
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 
-export async function PUT(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get("id");
     if (!id) {
@@ -10,19 +10,27 @@ export async function PUT(req: NextRequest) {
     }
 
     const formData = await req.formData();
+    const method = formData.get("_method");
+    const valid = formData.get("valid");
+    const link_banner = formData.get("link_banner") as string | null;
     const image = formData.get("image") as File | null;
-    const link = formData.get("link") as string;
 
     const dataToSend = new FormData();
 
-    if (link && link) {
-      dataToSend.append("link", link);
+    if (method) {
+      dataToSend.append("_method", method);
+    }
+    if (link_banner) {
+      dataToSend.append("link_banner", link_banner);
+    }
+    if (typeof valid === "string") {
+      dataToSend.append("valid", valid);
     }
     if (image && image instanceof File) {
       dataToSend.append("image", image);
     }
 
-    const response = await axiosInstance.put(`/api/pamplets/${id}`, dataToSend, {
+    const response = await axiosInstance.post(`/api/banners/${id}`, dataToSend, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -37,9 +45,7 @@ export async function PUT(req: NextRequest) {
     );
   } catch (error: any) {
     console.error("Error uploading:", error);
-
     const errorMessage = error.response?.data?.message || "Error uploading file";
-
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

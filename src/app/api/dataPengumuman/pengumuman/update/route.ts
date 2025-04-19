@@ -2,7 +2,7 @@ import axiosInstance from "@/libs/axiosInstance";
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 
-export async function PUT(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get("id");
     if (!id) {
@@ -10,15 +10,20 @@ export async function PUT(req: NextRequest) {
     }
 
     const formData = await req.formData();
+    const method = formData.get("_method");
     const image = formData.get("image") as File | null;
 
     const dataToSend = new FormData();
+
+    if (method) {
+      dataToSend.append("_method", method);
+    }
 
     if (image && image instanceof File) {
       dataToSend.append("image", image);
     }
 
-    const response = await axiosInstance.put(`/api/pengumuman/${id}`, dataToSend, {
+    const response = await axiosInstance.post(`/api/pengumuman/${id}`, dataToSend, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -33,9 +38,7 @@ export async function PUT(req: NextRequest) {
     );
   } catch (error: any) {
     console.error("Error uploading:", error);
-
     const errorMessage = error.response?.data?.message || "Error uploading file";
-
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

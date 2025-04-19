@@ -50,7 +50,7 @@ const menuGroups = [
       },
       {
         icon: <FaDiagramProject size={20} />,
-        label: "Daftar Program",
+        label: "Distribusi Program",
         route: "/dashboard/distribusi-program",
       },
       {

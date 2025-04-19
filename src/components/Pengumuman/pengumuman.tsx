@@ -9,6 +9,7 @@ const TablePengumuman = ({ dataPengumuman }: { dataPengumuman: any }) => {
   const [isPopupOpenImage, setIsPopupOpenImage] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [image, setimage] = useState<File | null>(null);
+  const [method, setMethod] = useState("put");
 
   const handleOpenPopupImage = (image: string) => {
     setSelectedImage(image);
@@ -29,16 +30,19 @@ const TablePengumuman = ({ dataPengumuman }: { dataPengumuman: any }) => {
   const [showPopupDelete, setShowPopupDelete] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
-  const handleEdit = async () => {
+  const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!selectedDeleteId) return;
     setIsLoadingDelete(true);
     try {
       const formData = new FormData();
+      formData.append("_method", method);
       if (image) {
         formData.append("image", image);
       }
       const response = await fetch(`/api/dataPengumuman/pengumuman/update?id=${selectedDeleteId}`, {
-        method: "PUT",
+        method: "POST",
+        body: formData,
       });
 
       if (response.ok) {

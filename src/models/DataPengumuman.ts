@@ -15,13 +15,15 @@ export interface DataPengumuman {
 export interface ListDataPamplet {
   id: number;
   image: string;
+  link_banner: string;
+  valid: boolean;
   created_at: string;
   updated_at: string;
 }
 
 export interface DataPamplet {
   data: ListDataPamplet[];
-  total_pamplets: number;
+  total_pengumuman: number;
   current_page: number;
   last_page: number;
   per_page: number;
