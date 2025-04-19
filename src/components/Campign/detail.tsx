@@ -130,7 +130,7 @@ const DetailCampaign = ({ detailCampaign }: { detailCampaign: any }) => {
 
         <div className="flex gap-7">
           <div className="w-50 font-semibold">Target Pengumpulan</div>
-          <div className="text-[#4A4D4F]">{detailCampaign?.total?.toLocaleString()}</div>
+          <div className="text-[#4A4D4F]"> {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(detailCampaign?.total)}</div>
         </div>
 
         <div className="flex gap-7">
