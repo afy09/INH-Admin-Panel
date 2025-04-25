@@ -6,23 +6,27 @@ import "react-quill/dist/quill.snow.css";
 import AlertSuccses from "../Alert/alert_sukses";
 
 const TambahDivisi = () => {
-  const [nama, setnama] = useState("");
+  const [divisi, setdivisi] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
-  const isValid = nama;
+  const isValid = divisi;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const formData = new FormData();
-      formData.append("nama", nama);
+      const dataToSend = {
+        divisi,
+      };
 
-      const response = await fetch(`/api/dataStruktur/create`, {
+      const response = await fetch(`/api/dataStruktur/dataDivisi/create`, {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
       });
 
       if (response.ok) {
@@ -55,7 +59,7 @@ const TambahDivisi = () => {
           <div className="flex gap-3 w-full">
             <div className="w-full">
               <label className="block mb-2 text-black-2 font-medium">Nama Divisi</label>
-              <input type="text" className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Nama Divisi" value={nama} onChange={(e) => setnama(e.target.value)} />
+              <input type="text" className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Nama Divisi" value={divisi} onChange={(e) => setdivisi(e.target.value)} />
             </div>
           </div>
 

@@ -7,11 +7,13 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const nama = formData.get("nama") as string;
     const jabatan = formData.get("jabatan") as string;
+    const divisi_id = formData.get("divisi_id") as string;
     const gambar = formData.get("gambar") as File | null;
 
     const dataToSend = new FormData();
     dataToSend.append("nama", nama);
     dataToSend.append("jabatan", jabatan);
+    dataToSend.append("divisi_id", divisi_id);
     if (gambar) {
       dataToSend.append("gambar", gambar);
     }

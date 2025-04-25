@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
     const method = formData.get("_method");
     const nama = formData.get("nama");
     const jabatan = formData.get("jabatan") as string;
+    const divisi_id = formData.get("divisi_id") as string;
     const gambar = formData.get("gambar") as File | null;
 
     const dataToSend = new FormData();
@@ -28,6 +29,11 @@ export async function POST(req: NextRequest) {
     if (typeof jabatan === "string") {
       dataToSend.append("jabatan", jabatan);
     }
+
+    if (typeof divisi_id === "string") {
+      dataToSend.append("divisi_id", divisi_id);
+    }
+
     if (gambar && gambar instanceof File) {
       dataToSend.append("gambar", gambar);
     }

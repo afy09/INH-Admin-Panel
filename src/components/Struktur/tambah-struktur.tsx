@@ -5,14 +5,13 @@ import Link from "next/link";
 import "react-quill/dist/quill.snow.css";
 import AlertSuccses from "../Alert/alert_sukses";
 
-const TambahStruktur = () => {
+const TambahStruktur = ({ dataDivisi }: { dataDivisi: any }) => {
   const [nama, setnama] = useState("");
   const [jabatan, setjabatan] = useState("");
   const [gambar, setgambar] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const divisiList = ["Dewan dan Direksi", "Divisi Program", "Divisi Media Center", "Divisi Keuangan", "Divisi Digital Fundraising & IT", "Divisi Logistik"];
-  const [divisi, setDivisi] = useState("");
+  const [divisi_id, setDivisi_id] = useState("");
 
   const isValid = nama && jabatan && gambar;
 
@@ -24,6 +23,7 @@ const TambahStruktur = () => {
       const formData = new FormData();
       formData.append("nama", nama);
       formData.append("jabatan", jabatan);
+      formData.append("divisi_id", divisi_id);
       if (gambar) {
         formData.append("gambar", gambar);
       }
@@ -76,13 +76,13 @@ const TambahStruktur = () => {
             <div className="w-full">
               <label className="block mb-2 text-black-2 font-medium">Divisi</label>
               <div className="relative">
-                <select value={divisi} onChange={(e) => setDivisi(e.target.value)} className="bg-gray-100 appearance-none outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg cursor-pointer">
+                <select value={divisi_id} onChange={(e) => setDivisi_id(e.target.value)} className="bg-gray-100 appearance-none outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg cursor-pointer">
                   <option value="" disabled>
                     Pilih Divisi
                   </option>
-                  {divisiList.map((item, idx) => (
-                    <option key={idx} value={item}>
-                      {item}
+                  {dataDivisi.map((item: any) => (
+                    <option key={item.id} value={item.id}>
+                      {item.divisi}
                     </option>
                   ))}
                 </select>

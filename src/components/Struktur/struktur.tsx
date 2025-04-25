@@ -8,7 +8,7 @@ import AlertDelete from "@/components/Alert/alert_delete";
 import Link from "next/link";
 import AlertUpdate from "../Alert/alert_update";
 
-const Struktur = ({ dataStruktur }: { dataStruktur: any }) => {
+const Struktur = ({ dataStruktur, dataDivisi }: { dataStruktur: any; dataDivisi: any }) => {
   const [isPopupOpenImage, setIsPopupOpenImage] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("Dewan & Direksi");
@@ -17,7 +17,7 @@ const Struktur = ({ dataStruktur }: { dataStruktur: any }) => {
   const [nama, setnama] = useState<string>("");
   const [jabatan, setjabatan] = useState<string>("");
   const divisiList = ["Dewan dan Direksi", "Divisi Program", "Divisi Media Center", "Divisi Keuangan", "Divisi Digital Fundraising & IT", "Divisi Logistik"];
-  const [divisi, setDivisi] = useState("");
+  const [divisi_id, setDivisi_id] = useState("");
 
   const tabs = ["Dewan & Direksi", "Divisi Program", "Divisi Media Center", "Divisi Keuangan", "Divisi Digital Fundraising & IT", "Divisi Logistik"];
   const filterTeam = () => {
@@ -109,6 +109,9 @@ const Struktur = ({ dataStruktur }: { dataStruktur: any }) => {
 
       if (jabatan) {
         formData.append("jabatan", jabatan);
+      }
+      if (divisi_id) {
+        formData.append("divisi_id", divisi_id);
       }
 
       if (gambar) {
@@ -243,13 +246,13 @@ const Struktur = ({ dataStruktur }: { dataStruktur: any }) => {
                 <label className="block mt-3 mb-2 text-black-2 font-medium">Divisi</label>
 
                 <div className="relative">
-                  <select value={divisi} onChange={(e) => setDivisi(e.target.value)} className="bg-gray-100 appearance-none outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg cursor-pointer">
+                  <select value={divisi_id} onChange={(e) => setDivisi_id(e.target.value)} className="bg-gray-100 appearance-none outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg cursor-pointer">
                     <option value="" disabled>
                       Pilih Divisi
                     </option>
-                    {divisiList.map((item, idx) => (
-                      <option key={idx} value={item}>
-                        {item}
+                    {dataDivisi.map((item: any) => (
+                      <option key={item.id} value={item.id}>
+                        {item.divisi}
                       </option>
                     ))}
                   </select>

@@ -6,10 +6,14 @@ export const metadata: Metadata = {
   title: "Admin Panel INH | Tambah Kode Tracking",
 };
 
-export default function page() {
+export default async function page() {
   return (
-    <div>
-      <TambahKode />
-    </div>
+    <>
+      <div>
+        <TambahKode />
+      </div>
+    </>
   );
 }
+
+export const dynamic = "force-dynamic";
