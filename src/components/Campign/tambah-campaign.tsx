@@ -2,8 +2,6 @@
 import React, { useState } from "react";
 import { ArrowBack } from "./icons/icon";
 import Link from "next/link";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { FaPaperPlane } from "react-icons/fa";
 import AlertSuccses from "../Alert/alert_sukses";
 

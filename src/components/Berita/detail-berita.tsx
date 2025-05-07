@@ -6,7 +6,7 @@ import { ArrowBack, Close } from "@/components/Campign/icons/icon";
 import AlertDeleteProduk from "../Alert/alert_delete_berita";
 import AlertUpdate from "../Alert/alert_update";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import "quill/dist/quill.snow.css";
 
 const DetailBerita = ({ detailBerita, dataKategori, dataUserAdmin }: { detailBerita: any; dataKategori: any; dataUserAdmin: any }) => {
   const { id } = useParams();

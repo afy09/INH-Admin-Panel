@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowBack, Close, LoadingSpiner } from "@/components/Campign/icons/icon";
 import AlertDeleteProduk from "../Alert/alert_delete_program";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import "quill/dist/quill.snow.css";
 import AlertUpdate from "../Alert/alert_update";
 
 const DetailProgram = ({ detailProgram, dataKategori, dataUserAdmin }: { detailProgram: any; dataKategori: any; dataUserAdmin: any }) => {
