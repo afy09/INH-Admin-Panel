@@ -18,14 +18,25 @@ const TableBerita = ({ dataBerita, currentPage, lastPage }: { dataBerita: any; c
       <div className="flex justify-between mt-3">
         <h1 className="text-black-2 px-4 py-3 font-semibold text-xl">Berita</h1>
 
-        <Link href="/dashboard/berita/tambah-berita">
-          <div className="px-4 py-3">
-            <button className="bg-amber-400 px-6 py-2 text-white rounded-lg flex justify-center gap-2 items-center">
-              <FaPlus />
-              Tambah
-            </button>
-          </div>
-        </Link>
+        <div className="flex ">
+          <Link href="/dashboard/berita/tambah-kategori-berita">
+            <div className="px-4 py-3">
+              <button className="border border-primary px-6 py-2 text-primary rounded-lg flex justify-center gap-2 items-center">
+                <FaPlus />
+                Tambah Kategori
+              </button>
+            </div>
+          </Link>
+
+          <Link href="/dashboard/berita/tambah-berita">
+            <div className="px-4 py-3">
+              <button className="bg-amber-400 px-6 py-2 text-white rounded-lg flex justify-center gap-2 items-center">
+                <FaPlus />
+                Tambah Berita
+              </button>
+            </div>
+          </Link>
+        </div>
       </div>
       <div className="w-full">
         {dataBerita && dataBerita.length > 0 ? (
@@ -48,9 +59,9 @@ const TableBerita = ({ dataBerita, currentPage, lastPage }: { dataBerita: any; c
                     {member.title}
                   </td>
                   <td className="p-3 flex justify-center">
-                    <img src={member.image} alt={member.title} className="w-20 h-auto" />
+                    <img src={member.image} alt="inh-news" className="w-20 h-auto" />
                   </td>
-                  <td className="p-3 capitalize">{member.kategori}</td>
+                  <td className="p-3 capitalize">{member.category?.nama}</td>
                   <td className="p-3">{new Date(member.created_at).toLocaleDateString()}</td>
                   <td className="p-3 text-amber-700 ">
                     <Link href={`/dashboard/berita/detail/${member?.id}`}>Detail</Link>

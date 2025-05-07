@@ -8,7 +8,7 @@ import AlertUpdate from "../Alert/alert_update";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
+const DetailBerita = ({ detailBerita, dataKategori, dataUserAdmin }: { detailBerita: any; dataKategori: any; dataUserAdmin: any }) => {
   const { id } = useParams();
   const [isPopupOpenImage, setIsPopupOpenImage] = useState(false);
   const handleOpenPopupImage = () => setIsPopupOpenImage(true);
@@ -22,9 +22,10 @@ const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
   // EDIT
   const [editData, setEditData] = useState({
     title: detailBerita?.title || "",
-    kategori: detailBerita?.kategori || "",
-    author: detailBerita?.author || "",
+    kategori: detailBerita?.category?.id || "",
+    author: detailBerita?.user?.id || "",
     deskripsi: detailBerita?.deskripsi || "",
+    caption: detailBerita?.caption || "",
     image: null as File | null,
   });
   const [method, setMethod] = useState("put");
@@ -54,9 +55,13 @@ const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
     }
   };
 
-  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setEditData({ ...editData, [name]: value });
+
+    setEditData({
+      ...editData,
+      [name]: name === "kategori" || name === "author" ? parseInt(value) : value,
+    });
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,8 +76,9 @@ const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
     const formData = new FormData();
     formData.append("_method", method);
     formData.append("title", editData.title);
-    formData.append("kategori", editData.kategori);
-    formData.append("author", editData.author);
+    formData.append("category_id", editData.kategori.toString());
+    formData.append("user_id", editData.author.toString());
+    formData.append("caption", editData.caption);
     formData.append("deskripsi", editData.deskripsi);
     if (editData.image) {
       formData.append("image", editData.image);
@@ -140,13 +146,18 @@ const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
         </div>
 
         <div className="flex gap-7">
-          <div className="w-50 font-semibold">Pengarang</div>
-          <div className="text-[#4A4D4F] capitalize">{detailBerita?.author}</div>
+          <div className="w-50 font-semibold">Author</div>
+          <div className="text-[#4A4D4F] capitalize">{detailBerita?.user?.name}</div>
         </div>
 
         <div className="flex gap-7">
           <div className="w-50 font-semibold">Kategori</div>
-          <div className="text-[#4A4D4F] capitalize">{detailBerita?.kategori}</div>
+          <div className="text-[#4A4D4F] capitalize">{detailBerita?.category?.nama}</div>
+        </div>
+
+        <div className="flex gap-7">
+          <div className="w-50 font-semibold">Caption</div>
+          <div className="text-[#4A4D4F] capitalize">{detailBerita?.caption}</div>
         </div>
 
         <div className="flex gap-7">
@@ -226,13 +237,31 @@ const DetailBerita = ({ detailBerita }: { detailBerita: any }) => {
 
               <div className="flex flex-col gap-1">
                 <label className="font-medium">Kategori</label>
-
-                <input name="kategori" value={editData.kategori} onChange={handleEditChange} placeholder="Kategori" className="border px-3 py-2 rounded" />
+                <select name="kategori" value={editData.kategori} onChange={(e) => setEditData({ ...editData, kategori: parseInt(e.target.value) })} className="border px-3 py-2 rounded">
+                  <option value="">Pilih Kategori</option>
+                  {dataKategori.map((kategori: any) => (
+                    <option key={kategori.id} value={kategori.id}>
+                      {kategori.nama}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="font-medium">Pengarang</label>
-                <input name="author" type="text" value={editData.author} onChange={handleEditChange} placeholder="Target" className="border px-3 py-2 rounded" />
+                <label className="font-medium">Author</label>
+                <select name="author" value={editData.author} onChange={(e) => setEditData({ ...editData, author: parseInt(e.target.value) })} className="border px-3 py-2 rounded">
+                  <option value="">Pilih Author</option>
+                  {dataUserAdmin.map((user: any) => (
+                    <option key={user.id} value={user.id}>
+                      {user.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="font-medium">Caption</label>
+                <input name="caption" type="text" value={editData.caption} onChange={handleEditChange} placeholder="Masukan caption" className="border px-3 py-2 rounded" />
               </div>
 
               <div className="flex flex-col gap-1">

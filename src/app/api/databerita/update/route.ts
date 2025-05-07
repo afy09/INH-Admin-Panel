@@ -13,8 +13,9 @@ export async function POST(req: NextRequest) {
     const method = formData.get("_method");
     const title = formData.get("title");
 
-    const kategori = formData.get("kategori") as string;
-    const author = formData.get("author") as string;
+    const kategori = formData.get("category_id") as string;
+    const author = formData.get("user_id") as string;
+    const caption = formData.get("caption") as string;
     const deskripsi = formData.get("deskripsi");
     const image = formData.get("image") as File | null;
 
@@ -23,16 +24,19 @@ export async function POST(req: NextRequest) {
     if (method) {
       dataToSend.append("_method", method);
     }
-    if (author) {
-      dataToSend.append("author", author);
-    }
     if (typeof title === "string") {
       dataToSend.append("title", title);
     }
-    if (typeof kategori === "string") {
-      dataToSend.append("kategori", kategori);
+    if (author) {
+      dataToSend.append("user_id", author);
+    }
+    if (kategori) {
+      dataToSend.append("category_id", kategori);
     }
 
+    if (typeof caption === "string") {
+      dataToSend.append("caption", caption);
+    }
     if (typeof deskripsi === "string") {
       dataToSend.append("deskripsi", deskripsi);
     }

@@ -3,3 +3,10 @@ export interface DataAdmin {
   email: string;
   role: string;
 }
+
+export interface DataUserAdmin {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+}

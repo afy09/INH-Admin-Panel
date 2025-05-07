@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "apexcharts": "^3.45.2",
+    "apexcharts": "^4.7.0",
     "axios": "^1.7.7",
     "cookies-next": "^4.2.1",
     "flatpickr": "^4.6.13",
     "git-filter-repo": "^0.0.30",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
     "jsvectormap": "^1.6.0",
     "lottie-react": "^2.4.1",
     "next": "^14.2.14",

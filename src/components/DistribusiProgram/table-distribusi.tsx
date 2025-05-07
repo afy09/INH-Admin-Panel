@@ -17,14 +17,25 @@ const TableDistribusi = ({ dataProgram, currentPage, lastPage }: { dataProgram: 
       <div className="flex justify-between mt-3">
         <h1 className="text-black-2 px-4 py-3 font-semibold text-xl">Distribusi Program</h1>
 
-        <Link href="/dashboard/distribusi-program/tambah-program">
-          <div className="px-4 py-3">
-            <button className="bg-amber-400 px-6 py-2 text-white rounded-lg flex justify-center gap-2 items-center">
-              <FaPlus />
-              Tambah
-            </button>
-          </div>
-        </Link>
+        <div className="flex ">
+          <Link href="/dashboard/distribusi-program/tambah-kategori-program">
+            <div className="px-4 py-3">
+              <button className="border border-primary px-6 py-2 text-primary rounded-lg flex justify-center gap-2 items-center">
+                <FaPlus />
+                Tambah Kategori
+              </button>
+            </div>
+          </Link>
+
+          <Link href="/dashboard/distribusi-program/tambah-program">
+            <div className="px-4 py-3">
+              <button className="bg-amber-400 px-6 py-2 text-white rounded-lg flex justify-center gap-2 items-center">
+                <FaPlus />
+                Tambah Distribusi
+              </button>
+            </div>
+          </Link>
+        </div>
       </div>
       <div className="w-full">
         {dataProgram && dataProgram.length > 0 ? (
@@ -49,7 +60,7 @@ const TableDistribusi = ({ dataProgram, currentPage, lastPage }: { dataProgram: 
                   <td className="p-3 flex justify-center">
                     <img src={member.image} alt="distribusi" className="w-20 h-auto" />
                   </td>
-                  <td className="p-3 capitalize">{member.kategori}</td>
+                  <td className="p-3 capitalize">{member.category?.nama}</td>
                   <td className="p-3">{new Date(member.created_at).toLocaleDateString()}</td>
                   <td className="p-3 text-amber-700 ">
                     <Link href={`/dashboard/distribusi-program/detail/${member?.id}`}>Detail</Link>

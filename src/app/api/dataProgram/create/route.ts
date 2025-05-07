@@ -6,15 +6,17 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const title = formData.get("title") as string;
-    const author = formData.get("author") as string;
-    const kategori = formData.get("kategori") as string;
+    const author = formData.get("user_id") as string;
+    const caption = formData.get("caption") as string;
+    const kategori = formData.get("category_id") as string;
     const deskripsi = formData.get("deskripsi") as string;
     const image = formData.get("image") as File | null;
 
     const dataToSend = new FormData();
     dataToSend.append("title", title);
-    dataToSend.append("author", author);
-    dataToSend.append("kategori", kategori);
+    dataToSend.append("user_id", author);
+    dataToSend.append("category_id", kategori);
+    dataToSend.append("caption", caption);
     dataToSend.append("deskripsi", deskripsi);
     if (image) {
       dataToSend.append("image", image);

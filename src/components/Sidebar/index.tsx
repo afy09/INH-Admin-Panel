@@ -14,6 +14,9 @@ import { FaHandshake } from "react-icons/fa";
 import { GrProjects } from "react-icons/gr";
 import { FaDiagramProject } from "react-icons/fa6";
 import { FaCodePullRequest } from "react-icons/fa6";
+import { FaMoneyBillTransfer } from "react-icons/fa6";
+import { FaMoneyBillTrendUp } from "react-icons/fa6";
+import { FaRegUser } from "react-icons/fa";
 import { removeToken } from "@/libs/axiosInstance";
 import { deleteCookie } from "cookies-next";
 import { usePathname, useRouter } from "next/navigation";
@@ -44,6 +47,16 @@ const menuGroups = [
         route: "/dashboard/campign",
       },
       {
+        icon: <FaMoneyBillTransfer size={20} />,
+        label: "Transaksi",
+        route: "/dashboard/transaksi",
+      },
+      {
+        icon: <FaMoneyBillTrendUp size={20} />,
+        label: "Donatur",
+        route: "/dashboard/donatur",
+      },
+      {
         icon: <IoNewspaperOutline size={20} />,
         label: "Berita",
         route: "/dashboard/berita",
@@ -72,6 +85,12 @@ const menuGroups = [
         icon: <VscOrganization size={20} />,
         label: "Struktur Organisasi",
         route: "/dashboard/struktur",
+      },
+
+      {
+        icon: <FaRegUser size={20} />,
+        label: "Akun",
+        route: "/dashboard/akun",
       },
 
       {

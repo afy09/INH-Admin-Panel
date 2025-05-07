@@ -7,16 +7,17 @@ import "react-quill/dist/quill.snow.css";
 import { FaPaperPlane } from "react-icons/fa";
 import AlertSuccses from "../Alert/alert_sukses";
 
-const TambahBerita = () => {
+const TambahBerita = ({ dataKategori, dataUserAdmin }: { dataKategori: any; dataUserAdmin: any }) => {
   const [title, settitle] = useState("");
   const [author, setauthor] = useState("");
   const [deskripsi, setdeskripsi] = useState("");
   const [kategori, setkategori] = useState("");
+  const [caption, setcaption] = useState("");
   const [image, setimage] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
-  const isValid = title && author && deskripsi && kategori && image;
+  const isValid = title && author && deskripsi && kategori && caption && image;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,8 +26,9 @@ const TambahBerita = () => {
     try {
       const formData = new FormData();
       formData.append("title", title);
-      formData.append("author", author);
-      formData.append("kategori", kategori);
+      formData.append("user_id", author);
+      formData.append("category_id", kategori);
+      formData.append("caption", caption);
       formData.append("deskripsi", deskripsi);
 
       if (image) {
@@ -71,8 +73,8 @@ const TambahBerita = () => {
               <input type="text" className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Nama Judul" value={title} onChange={(e) => settitle(e.target.value)} />
             </div>
             <div className="w-full">
-              <label className="block mb-2 text-black-2 font-medium">Pengarang</label>
-              <input type="text" className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Pengarang" value={author} onChange={(e) => setauthor(e.target.value)} />
+              <label className="block mb-2 text-black-2 font-medium">Caption</label>
+              <input type="text" className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Caption" value={caption} onChange={(e) => setcaption(e.target.value)} />
             </div>
           </div>
 
@@ -80,13 +82,33 @@ const TambahBerita = () => {
           <div className="flex gap-3 w-full mt-6">
             <div className="w-full">
               <label className="block mb-2 text-black-2 font-medium">Kategori</label>
-              <input type="text" className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Kategori" value={kategori} onChange={(e) => setkategori(e.target.value)} />
+              <select name="kategori" value={kategori} onChange={(e) => setkategori(e.target.value)} className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg">
+                <option value="">Pilih Kategori</option>
+                {dataKategori.map((kategori: any) => (
+                  <option key={kategori.id} value={kategori.id}>
+                    {kategori.nama}
+                  </option>
+                ))}
+              </select>
             </div>
+
             <div className="w-full">
-              <label className="block mb-2 text-black-2 font-medium">Upload Gambar</label>
-              <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
-                <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => setimage(e.target.files ? e.target.files[0] : null)} />
-              </div>
+              <label className="block mb-2 text-black-2 font-medium">Author</label>
+              <select name="author" value={author} onChange={(e) => setauthor(e.target.value)} className="bg-gray-100 outline-none px-4 py-3 w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg">
+                <option value="">Pilih Author</option>
+                {dataUserAdmin.map((user: any) => (
+                  <option key={user.id} value={user.id}>
+                    {user.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="w-full mt-6">
+            <label className="block mb-2 text-black-2 font-medium">Upload Gambar</label>
+            <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
+              <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => setimage(e.target.files ? e.target.files[0] : null)} />
             </div>
           </div>
           {/* Deskripsi */}

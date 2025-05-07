@@ -16,27 +16,10 @@ const Struktur = ({ dataStruktur, dataDivisi }: { dataStruktur: any; dataDivisi:
   const [gambar, setgambar] = useState<File | null>(null);
   const [nama, setnama] = useState<string>("");
   const [jabatan, setjabatan] = useState<string>("");
-  const divisiList = ["Dewan dan Direksi", "Divisi Program", "Divisi Media Center", "Divisi Keuangan", "Divisi Digital Fundraising & IT", "Divisi Logistik"];
   const [divisi_id, setDivisi_id] = useState("");
 
-  const tabs = ["Dewan & Direksi", "Divisi Program", "Divisi Media Center", "Divisi Keuangan", "Divisi Digital Fundraising & IT", "Divisi Logistik"];
   const filterTeam = () => {
-    return dataStruktur.filter((media: any) => {
-      if (activeTab === "Dewan & Direksi") {
-        return ["Dewan Pembina", "Dewan Pengawas", "Founder", "Presiden Direktur", "Sekretaris"].includes(media.jabatan);
-      } else if (activeTab === "Divisi Program") {
-        return ["Manager Program", "Staff Program"].includes(media.jabatan);
-      } else if (activeTab === "Divisi Media Center") {
-        return media.jabatan.toLowerCase().includes("media");
-      } else if (activeTab === "Divisi Keuangan") {
-        return media.jabatan.toLowerCase().includes("finance");
-      } else if (activeTab === "Divisi Digital Fundraising & IT") {
-        return media.jabatan.toLowerCase().includes("fundraising") || media.jabatan.toLowerCase().includes("it") || media.jabatan.toLowerCase().includes("customer service") || media.jabatan.toLowerCase().includes("fundraiser");
-      } else if (activeTab === "Divisi Logistik") {
-        return media.jabatan.toLowerCase().includes("logistik");
-      }
-      return false;
-    });
+    return dataStruktur.filter((media: any) => media?.divisi?.divisi === activeTab);
   };
 
   const handleOpenPopupImage = (image: string) => {
@@ -151,12 +134,15 @@ const Struktur = ({ dataStruktur, dataDivisi }: { dataStruktur: any; dataDivisi:
           </div>
         </div>
         <div className="mt-7 grid grid-cols-3 gap-3 ps-1 pe-6">
-          {tabs.map((tab) => (
+          {dataDivisi.map((item: any) => (
             <button
-              key={tab}
-              className={`px-6 py-2 text-sm font-medium rounded-md  transition-colors duration-300 ms-2 ${activeTab === tab ? "bg-amber-400 text-white" : "bg-gray-300 text-gray-700 dark:bg-gray-700 dark:text-gray-200"}`}
-              onClick={() => setActiveTab(tab)}>
-              {tab}
+              key={item.id}
+              className={`px-6 py-2 text-sm font-medium rounded-md transition-colors duration-300 ms-2 ${activeTab === item.divisi ? "bg-amber-400 text-white" : "bg-gray-300 text-gray-700 dark:bg-gray-700 dark:text-gray-200"}`}
+              onClick={() => {
+                setActiveTab(item.divisi);
+                setDivisi_id(item.id); // Opsional: Jika ingin langsung set divisi_id juga
+              }}>
+              {item.divisi}
             </button>
           ))}
         </div>

@@ -31,6 +31,12 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
     if (pathname.includes("struktur") && item.route && item.route.includes("struktur")) {
       return true;
     }
+    if (pathname.includes("akun") && item.route && item.route.includes("akun")) {
+      return true;
+    }
+    if (pathname.includes("transaksi") && item.route && item.route.includes("transaksi")) {
+      return true;
+    }
     if (item.children) {
       return item.children.some((child: any) => isActive(child));
     }
