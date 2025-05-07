@@ -115,7 +115,7 @@ const TambahBerita = ({ dataKategori, dataUserAdmin }: { dataKategori: any; data
 
           <div className="mt-6">
             <label className="block mb-2 text-black-2 font-medium">Deskripsi</label>
-            <ReactQuill theme="snow" value={deskripsi} onChange={(content) => setdeskripsi(content)} className="  outline-none  w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Deskripsi Berita" />
+            <ReactQuill theme="snow" value={deskripsi} onChange={(content: any) => setdeskripsi(content)} className="  outline-none  w-full text-black-2 placeholder:text-[#DEE4EE] rounded-lg" placeholder="Masukkan Deskripsi Berita" />
           </div>
 
           {/* Button */}

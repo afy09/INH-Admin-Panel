@@ -266,7 +266,7 @@ const DetailProgram = ({ detailProgram, dataKategori, dataUserAdmin }: { detailP
 
               <div className="flex flex-col gap-1">
                 <label className="font-medium">Deskripsi</label>
-                <ReactQuill theme="snow" value={editData.deskripsi} onChange={(value) => setEditData({ ...editData, deskripsi: value })} className="bg-white" />
+                <ReactQuill theme="snow" value={editData.deskripsi} onChange={(value: any) => setEditData({ ...editData, deskripsi: value })} className="bg-white" />
               </div>
 
               <div className="flex flex-col gap-1">
