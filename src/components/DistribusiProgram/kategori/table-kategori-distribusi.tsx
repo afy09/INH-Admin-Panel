@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { ArrowBack } from "@/components/Campign/icons/icon";
 import Link from "next/link";
-import "react-quill/dist/quill.snow.css";
 import AlertSuccses from "@/components/Alert/alert_sukses";
 
 const TambahKategoriDistribusi = () => {
