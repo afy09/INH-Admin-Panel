@@ -16,37 +16,28 @@ const InvoiceTemplate = forwardRef<HTMLDivElement, { transaksi: any }>(({ transa
   const nama = transaksi?.customer?.name ?? "-";
   const jumlah = transaksi?.credit ?? 0;
   const terbilang = toTerbilang(jumlah).trim() + " rupiah";
-  const tanggal = new Date(transaksi?.createdAt).toLocaleDateString("id-ID");
+  const tanggal = new Date(transaksi?.createdAt ?? new Date()).toLocaleDateString("id-ID");
   const program = transaksi?.paymentLink?.name ?? "-";
 
   return (
-    <div ref={ref} className="w-[700px] h-[400px] border border-black p-8 font-serif text-black bg-white text-[16px] leading-relaxed">
-      <div className="text-center text-[20px] font-bold mb-6">KWITANSI</div>
+    <div ref={ref} className="relative w-[800px] h-[1140px]">
+      {/* Background full image */}
+      <img src="/images/product/kwitansi_inh.png" alt="Kwitansi Background" className="absolute top-0 left-0 w-full h-full object-cover" />
 
-      <div className="mb-4">
-        <div>
-          Nama: <strong className="uppercase">{nama}</strong>
-        </div>
-        <div>
-          Tanggal: <strong>{tanggal}</strong>
-        </div>
-        <div>
-          Jumlah: <strong>Rp {jumlah.toLocaleString("id-ID")}</strong>
-        </div>
-      </div>
+      {/* Nama Donatur */}
+      <div className="absolute top-[435px] left-[150px]  text-[30px] font-bold uppercase text-blue-950">{nama}</div>
 
-      <div className="mb-4">
-        Terbilang: <em className="capitalize">{terbilang}</em>
-      </div>
+      {/* Tanggal */}
+      <div className="absolute top-[510px] left-[180px] text-white z-999999">{tanggal}</div>
 
-      <div className="mb-8">
-        Program Donasi: <strong className="capitalize">{program}</strong>
-      </div>
+      {/* Nominal */}
+      <div className="absolute top-[525px] left-[330px] text-white text-[50px] z-999999">{jumlah.toLocaleString("id-ID")}</div>
 
-      <div className="text-right mt-12">
-        <div>Hormat Kami,</div>
-        <div className="mt-16">Admin</div>
-      </div>
+      {/* Terbilang */}
+      <div className="absolute top-[598px] left-[300px]  text-black-2 text-[20px]  italic">{terbilang}</div>
+
+      {/* Program Donasi */}
+      <div className="absolute top-[630px] left-[375px]  text-black-2 text-[20px]">{program}</div>
     </div>
   );
 });
