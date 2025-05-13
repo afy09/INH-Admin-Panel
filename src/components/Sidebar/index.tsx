@@ -16,6 +16,7 @@ import { FaDiagramProject } from "react-icons/fa6";
 import { FaCodePullRequest } from "react-icons/fa6";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
+import { GiReceiveMoney } from "react-icons/gi";
 import { FaRegUser } from "react-icons/fa";
 import { removeToken } from "@/libs/axiosInstance";
 import { deleteCookie } from "cookies-next";
@@ -55,6 +56,11 @@ const menuGroups = [
         icon: <FaMoneyBillTrendUp size={20} />,
         label: "Donatur",
         route: "/dashboard/donatur",
+      },
+      {
+        icon: <GiReceiveMoney size={20} />,
+        label: "Donasi Tradisional",
+        route: "/dashboard/donasi-tradisional",
       },
       {
         icon: <IoNewspaperOutline size={20} />,
@@ -124,7 +130,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         if (!dataAdmin) return false;
         if (dataAdmin.role === "super-admin") return true;
         if (dataAdmin.role === "Media") return ["Beranda", "Berita", "Logout"].includes(item.label);
-        if (dataAdmin.role === "Fundraising") return ["Beranda", "Campaign", "Daftar Program", "Pengumuman", "Pengumuman", "Logout"].includes(item.label);
+        if (dataAdmin.role === "Fundraising") return ["Beranda", "Campaign", "Daftar Program", "Pengumuman", "Donasi Tradisional", "Logout"].includes(item.label);
         return false;
       }),
     }))

@@ -24,6 +24,8 @@ const TableTransaksiUnpaid = ({ dataTransaksi, currentPage, lastPage }: { dataTr
               <tr>
                 <th className="font-normal p-3">No</th>
                 <th className="font-normal p-3">Nama</th>
+                <th className="font-normal p-3">Email</th>
+                <th className="font-normal p-3">No Telepon</th>
                 <th className="font-normal p-3">Jumlah</th>
                 <th className="font-normal p-3">Program</th>
                 <th className="font-normal p-3">Tanggal Dibuat</th>
@@ -35,6 +37,12 @@ const TableTransaksiUnpaid = ({ dataTransaksi, currentPage, lastPage }: { dataTr
                 <tr key={member.id} className="text-center text-black-2 text-[13px] border">
                   <td className="p-3">{index + 1}</td>
                   <td className="p-3 max-w-30 truncate cursor-pointer">{member.customer?.name}</td>
+                  <td className="p-3 max-w-30 truncate cursor-pointer" title={member.customer?.email}>
+                    {member.customer?.email}
+                  </td>
+                  <td className="p-3 max-w-30 truncate cursor-pointer" title={member.customer?.mobile}>
+                    {member.customer?.mobile}
+                  </td>
                   <td className="p-3 capitalize">{member.amount?.toLocaleString("id-ID", { style: "currency", currency: "IDR" })}</td>
                   <td className="p-3 max-w-30 truncate cursor-pointer">{member.paymentLink?.name}</td>
                   <td className="p-3">{new Date(member.createdAt).toLocaleDateString()}</td>
@@ -98,7 +106,7 @@ const TableTransaksiUnpaid = ({ dataTransaksi, currentPage, lastPage }: { dataTr
                 <strong>Email :</strong> {selectedTransaksi.customer?.email}
               </p>
               <p className="flex justify-between">
-                <strong>HP :</strong> {selectedTransaksi.customer?.mobile}
+                <strong>No Telepon :</strong> {selectedTransaksi.customer?.mobile}
               </p>
               <p className="flex justify-between">
                 <strong>Program :</strong> {selectedTransaksi.paymentLink?.name}

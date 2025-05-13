@@ -16,7 +16,7 @@ const TambahAkun = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const validatePassword = (value: string) => {
-    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/;
+    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+{}\[\]|:"<>?\`=\-\\;',.]).{8,}$/;
     if (!regex.test(value)) {
       setPasswordError("Password harus mengandung huruf besar, angka, dan simbol.");
     } else {

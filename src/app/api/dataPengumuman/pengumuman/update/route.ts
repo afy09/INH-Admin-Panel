@@ -11,12 +11,21 @@ export async function POST(req: NextRequest) {
 
     const formData = await req.formData();
     const method = formData.get("_method");
+    const valid = formData.get("valid");
+    const link_pengumuman = formData.get("link_pengumuman") as string | null;
     const image = formData.get("image") as File | null;
 
     const dataToSend = new FormData();
 
     if (method) {
       dataToSend.append("_method", method);
+    }
+
+    if (link_pengumuman) {
+      dataToSend.append("link_pengumuman", link_pengumuman);
+    }
+    if (typeof valid === "string") {
+      dataToSend.append("valid", valid);
     }
 
     if (image && image instanceof File) {

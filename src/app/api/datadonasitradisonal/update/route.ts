@@ -10,14 +10,17 @@ export async function PUT(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { nama, url } = body;
+    const { nama, nominal, no_hp, tujuan_donasi, tanggal } = body;
 
     // Buat objek hanya dengan field yang ada
     const dataToSend: Record<string, any> = {};
     if (nama) dataToSend.nama = nama;
-    if (url) dataToSend.url = url;
+    if (nominal) dataToSend.nominal = nominal;
+    if (no_hp) dataToSend.no_hp = no_hp;
+    if (tujuan_donasi) dataToSend.tujuan_donasi = tujuan_donasi;
+    if (tanggal) dataToSend.tanggal = tanggal;
 
-    const response = await axiosInstance.put(`/api/aktivitas-terbaru/${id}`, dataToSend, {
+    const response = await axiosInstance.put(`/api/donasi/${id}`, dataToSend, {
       headers: {
         "Content-Type": "application/json",
       },

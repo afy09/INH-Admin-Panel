@@ -35,32 +35,44 @@ const TableTransaksi = ({ dataTransaksi, currentPage, lastPage }: { dataTransaks
     <div className="">
       <div className="w-full">
         {dataTransaksi && dataTransaksi.length > 0 ? (
-          <table className="w-full">
-            <thead className="bg-amber-50 text-[#252525] font-light text-[14px] rounded-lg">
-              <tr>
-                <th className="font-normal p-3">No</th>
-                <th className="font-normal p-3">Nama</th>
-                <th className="font-normal p-3">Jumlah</th>
-                <th className="font-normal p-3">Program</th>
-                <th className="font-normal p-3">Tanggal Transaksi</th>
-                <th className="font-normal p-3">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dataTransaksi.map((member: any, index: number) => (
-                <tr key={member.id} className="text-center text-black-2 text-[13px] border">
-                  <td className="p-3">{index + 1}</td>
-                  <td className="p-3 max-w-30 truncate cursor-pointer">{member.customer?.name}</td>
-                  <td className="p-3 capitalize">{member.credit?.toLocaleString("id-ID", { style: "currency", currency: "IDR" })}</td>
-                  <td className="p-3 max-w-30 truncate cursor-pointer">{member.paymentLink?.name}</td>
-                  <td className="p-3">{new Date(member.createdAt).toLocaleDateString()}</td>
-                  <td className="p-3 text-amber-700 ">
-                    <button onClick={() => setSelectedTransaksi(member)}>Detail</button>
-                  </td>
+          <div className="max-w-full overflow-x-scroll">
+            <table className="w-full">
+              <thead className="bg-amber-50 text-[#252525] font-light text-[14px] rounded-lg">
+                <tr>
+                  <th className="font-normal p-3">No</th>
+                  <th className="font-normal p-3">Nama</th>
+                  <th className="font-normal p-3">Email</th>
+                  <th className="font-normal p-3">No Telepon</th>
+                  <th className="font-normal p-3">Jumlah</th>
+                  <th className="font-normal p-3">Program</th>
+                  <th className="font-normal p-3">Tanggal Transaksi</th>
+                  <th className="font-normal p-3">Aksi</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {dataTransaksi.map((member: any, index: number) => (
+                  <tr key={member.id} className="text-center text-black-2 text-[13px] border">
+                    <td className="p-3">{index + 1}</td>
+                    <td className="p-3 max-w-30 truncate cursor-pointer">{member.customer?.name}</td>
+                    <td className="p-3 max-w-30 truncate cursor-pointer" title={member.customer?.email}>
+                      {member.customer?.email}
+                    </td>
+                    <td className="p-3 max-w-30 truncate cursor-pointer" title={member.customer?.mobile}>
+                      {member.customer?.mobile}
+                    </td>
+                    <td className="p-3 capitalize">{member.credit?.toLocaleString("id-ID", { style: "currency", currency: "IDR" })}</td>
+                    <td className="p-3 max-w-30 truncate cursor-pointer" title={member.paymentLink?.name}>
+                      {member.paymentLink?.name}
+                    </td>
+                    <td className="p-3">{new Date(member.createdAt).toLocaleString()}</td>
+                    <td className="p-3 text-amber-700 ">
+                      <button onClick={() => setSelectedTransaksi(member)}>Detail</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           <NoDataImage />
         )}
@@ -119,7 +131,7 @@ const TableTransaksi = ({ dataTransaksi, currentPage, lastPage }: { dataTransaks
                 <strong>Email :</strong> {selectedTransaksi.customer?.email}
               </p>
               <p className="flex justify-between">
-                <strong>HP :</strong> {selectedTransaksi.customer?.mobile}
+                <strong>No Telepon :</strong> {selectedTransaksi.customer?.mobile}
               </p>
               <p className="flex justify-between">
                 <strong>Program :</strong> {selectedTransaksi.paymentLink?.name}

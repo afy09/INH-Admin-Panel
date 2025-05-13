@@ -22,6 +22,10 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
     if (pathname.includes("distribusi-program") && item.route && item.route.includes("distribusi-program")) {
       return true;
     }
+
+    if (pathname.includes("donasi-tradisional") && item.route && item.route.includes("donasi-tradisional")) {
+      return true;
+    }
     if (pathname.includes("kerja-sama") && item.route && item.route.includes("kerja-sama")) {
       return true;
     }

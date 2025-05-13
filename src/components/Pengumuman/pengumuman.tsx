@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import { Close } from "@/components/Campign/icons/icon";
@@ -9,6 +9,8 @@ const TablePengumuman = ({ dataPengumuman }: { dataPengumuman: any }) => {
   const [isPopupOpenImage, setIsPopupOpenImage] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [image, setimage] = useState<File | null>(null);
+  const [link_pengumuman, setlink_pengumuman] = useState<string>("");
+  const [openInNewTab, setOpenInNewTab] = useState(false);
   const [method, setMethod] = useState("put");
 
   const handleOpenPopupImage = (image: string) => {
@@ -37,6 +39,11 @@ const TablePengumuman = ({ dataPengumuman }: { dataPengumuman: any }) => {
     try {
       const formData = new FormData();
       formData.append("_method", method);
+      formData.append("valid", openInNewTab.toString());
+      if (link_pengumuman) {
+        formData.append("link_pengumuman", link_pengumuman);
+      }
+
       if (image) {
         formData.append("image", image);
       }
@@ -58,6 +65,13 @@ const TablePengumuman = ({ dataPengumuman }: { dataPengumuman: any }) => {
       setSelectedDeleteId(null);
     }
   };
+
+  useEffect(() => {
+    const selectedData = dataPengumuman.find((item: any) => item.id === selectedDeleteId);
+    if (selectedData) {
+      setOpenInNewTab(selectedData.valid === "true");
+    }
+  }, [selectedDeleteId, dataPengumuman]);
 
   return (
     <>
@@ -107,6 +121,24 @@ const TablePengumuman = ({ dataPengumuman }: { dataPengumuman: any }) => {
                 <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
                   <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => setimage(e.target.files ? e.target.files[0] : null)} />
                 </div>
+              </div>
+
+              <label className="block mt-3 mb-2 text-black-2 font-medium">link</label>
+              <div className="bg-gray-100 px-4 py-3 w-full text-black-2 rounded-lg flex items-center gap-2">
+                <input
+                  className="bg-gray-100 outline-none w-full placeholder:text-black-2"
+                  type="text"
+                  value={link_pengumuman}
+                  onChange={(e) => setlink_pengumuman(e.target.value)}
+                  placeholder={dataPengumuman.find((item: any) => item.id === selectedDeleteId)?.link_pengumuman ?? ""}
+                />
+              </div>
+
+              <div className="mt-3 flex items-center gap-2">
+                <input type="checkbox" id="openInNewTab" checked={openInNewTab} onChange={(e) => setOpenInNewTab(e.target.checked)} />
+                <label htmlFor="openInNewTab" className="text-black-2 font-medium">
+                  Open link in new tab
+                </label>
               </div>
               <div className="mt-6 flex justify-center gap-2">
                 <button className="px-12 py-2 border border-black-2 text-black-2 rounded-lg" onClick={handleClosePopupDelete}>
