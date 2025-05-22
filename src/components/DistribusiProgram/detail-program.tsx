@@ -7,6 +7,7 @@ import AlertDeleteProduk from "../Alert/alert_delete_program";
 import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
 import AlertUpdate from "../Alert/alert_update";
+import { useMemo } from "react";
 
 const DetailProgram = ({ detailProgram, dataKategori, dataUserAdmin }: { detailProgram: any; dataKategori: any; dataUserAdmin: any }) => {
   const { id } = useParams();
@@ -111,13 +112,91 @@ const DetailProgram = ({ detailProgram, dataKategori, dataUserAdmin }: { detailP
       .trim();
   };
 
+  function uploadToLaravel(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append("upload", file); // ✅ sesuai API yang kamu tunjukkan
+
+    return fetch("https://inhforhumanity.org/api/distribusi-program/upload-deskripsi-image", {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.url) return data.url;
+        throw new Error("Upload gagal: URL tidak ditemukan di respons.");
+      });
+  }
+
+  function imageHandler(this: any) {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+
+      if (file.size > 1 * 1024 * 1024) {
+        alert("Ukuran gambar maksimal 1MB");
+        return;
+      }
+
+      try {
+        const url = await uploadToLaravel(file);
+        const quill = this.quill;
+        const range = quill.getSelection(true);
+        quill.insertEmbed(range.index, "image", url); // ✅ Gambar langsung muncul di editor
+        quill.setSelection(range.index + 1);
+      } catch (error) {
+        console.error(error);
+        alert("Gagal mengunggah gambar");
+      }
+    };
+  }
+
+  function videoHandler(this: any) {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "video/*");
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+
+      try {
+        const url = await uploadToLaravel(file);
+        const quill = this.quill;
+        const range = quill.getSelection(true);
+        quill.insertEmbed(range.index, "video", url); // ✅ Video langsung muncul di editor
+        quill.setSelection(range.index + 1);
+      } catch (error) {
+        console.error(error);
+        alert("Gagal mengunggah video");
+      }
+    };
+  }
+
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [[{ header: [1, 2, false] }], ["bold", "italic", "underline", "link"], [{ list: "ordered" }, { list: "bullet" }], ["image", "video"], ["clean"]],
+        handlers: {
+          image: imageHandler,
+          video: videoHandler,
+        },
+      },
+    }),
+    []
+  );
+
   useEffect(() => {
     if (detailProgram) {
-      const plainText = htmlToPlainText(detailProgram.deskripsi);
-      setEditData({
-        ...editData,
-        deskripsi: plainText,
-      });
+      setEditData((prev) => ({
+        ...prev,
+        deskripsi: detailProgram.deskripsi || "",
+      }));
     }
   }, [detailProgram]);
 
@@ -266,7 +345,7 @@ const DetailProgram = ({ detailProgram, dataKategori, dataUserAdmin }: { detailP
 
               <div className="flex flex-col gap-1">
                 <label className="font-medium">Deskripsi</label>
-                <ReactQuill theme="snow" value={editData.deskripsi} onChange={(value: any) => setEditData({ ...editData, deskripsi: value })} className="bg-white" />
+                <ReactQuill theme="snow" modules={modules} value={editData.deskripsi} onChange={(value: any) => setEditData({ ...editData, deskripsi: value })} className="bg-white" />
               </div>
 
               <div className="flex flex-col gap-1">
