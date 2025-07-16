@@ -3,10 +3,13 @@ import React, { useState } from "react";
 import { IoEyeOutline } from "react-icons/io5";
 import { useParams } from "next/navigation";
 import { Close } from "@/components/Campign/icons/icon";
-import { FaRegEdit } from "react-icons/fa";
+import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import AlertUpdate from "../Alert/alert_update";
+import AlertDelete from "../Alert/alert_delete";
+import { useRouter } from "next/navigation";
 
-const TableAktivitas = ({ dataAktivitas }: { dataAktivitas: any }) => {
+const TableAktivitas = ({ dataAktivitas, currentPage, lastPage }: { dataAktivitas: any; currentPage: number; lastPage: number }) => {
+  const router = useRouter();
   const [isPopupOpenVideo, setIsPopupOpenVideo] = useState(false);
   const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
   //   EDIT
@@ -66,6 +69,44 @@ const TableAktivitas = ({ dataAktivitas }: { dataAktivitas: any }) => {
     }
   };
 
+  const [selectedDeleteId, setSelectedDeleteId] = useState<string | null>(null);
+  const [isPopupOpenDelete, setIsPopupOpenDelete] = useState(false);
+  const handleOpenPopupDelete = (id: string) => {
+    setSelectedDeleteId(id);
+    setIsPopupOpenDelete(true);
+  };
+  const handleClosePopupDelete = () => setIsPopupOpenDelete(false);
+  const [showPopupDelete, setShowPopupDelete] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+
+  const handleDelete = async () => {
+    if (!selectedDeleteId) return;
+    setIsLoadingDelete(true);
+    try {
+      const response = await fetch(`/api/dataPengumuman/aktivitas/delete?id=${selectedDeleteId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        setIsPopupOpenDelete(false);
+        setShowPopupDelete(true);
+      } else {
+        console.error("Error:", await response.json());
+      }
+    } catch (error) {
+      console.error("Error delete event:", error);
+    } finally {
+      setIsLoadingDelete(false);
+      setSelectedDeleteId(null);
+    }
+  };
+
+  const handlePageChange = (newPage: number) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("page", newPage.toString());
+    router.push(`?${urlParams.toString()}`);
+  };
+
   return (
     <>
       <div className="m-3 w-full">
@@ -88,12 +129,34 @@ const TableAktivitas = ({ dataAktivitas }: { dataAktivitas: any }) => {
                   <div className="bg-green-900 rounded-lg py-2 w-full flex justify-center cursor-pointer" onClick={() => handleOpenPopupEdit(media)}>
                     <FaRegEdit className="text-white" />
                   </div>
+
+                  <div className="bg-red-700 rounded-lg py-2 w-full flex justify-center cursor-pointer" onClick={() => handleOpenPopupDelete(media.id)}>
+                    <FaRegTrashAlt className="text-white" />
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
       </div>
+
+      {dataAktivitas && dataAktivitas.length > 0 && (
+        <div className="flex justify-end items-center mt-6 mb-3 me-2 text-[12px]">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage <= 1}
+            className={`px-4 py-2 mx-1 rounded ${currentPage <= 1 ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-primary text-white cursor-pointer"}`}>
+            Prev
+          </button>
+          <span className="px-4 py-2 mx-1 text-primary border border-primary rounded">{`Page ${currentPage} of ${lastPage}`}</span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage >= lastPage}
+            className={`px-4 py-2 mx-1 rounded  ${currentPage >= lastPage ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-primary text-white cursor-pointer"}`}>
+            Next
+          </button>
+        </div>
+      )}
 
       {isPopupOpenVideo && selectedVideoId && (
         <div className="fixed inset-0 flex items-center justify-center bg-black-2 bg-opacity-70 z-999999">
@@ -141,7 +204,31 @@ const TableAktivitas = ({ dataAktivitas }: { dataAktivitas: any }) => {
         </div>
       )}
 
+      {isPopupOpenDelete && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black-2 bg-opacity-70 z-999999">
+          <div className="bg-white p-8 rounded-2xl shadow-lg  ms-90 me-22">
+            <div className="flex justify-end -mt-3 cursor-pointer" onClick={handleClosePopupDelete}>
+              <Close />
+            </div>
+            <h1 className="text-black-2 font-medium text-xl text-center mt-3">
+              Apakah anda yakin <br /> ingin menghapus data ini ?
+            </h1>
+
+            <div className="mt-6 flex justify-center gap-2">
+              <button className="px-12 py-2 bg-red-600 text-white rounded-lg" onClick={handleDelete}>
+                {isLoadingDelete ? `Menghapus` : `Hapus`}
+              </button>
+              <button className="px-12 py-2 border border-black-2 text-black-2 rounded-lg" onClick={handleClosePopupDelete}>
+                Tidak
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {showPopupEdit && <AlertUpdate />}
+
+      {showPopupDelete && <AlertDelete />}
     </>
   );
 };

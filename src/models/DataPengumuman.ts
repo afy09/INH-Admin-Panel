@@ -1,6 +1,15 @@
 export interface DataAktivitas {
+  data: ListDataAktivitas[];
+  total_pengumuman: number;
+  current_page: number;
+  last_page: number;
+  per_page: number;
+}
+
+export interface ListDataAktivitas {
   id: number;
   url: string;
+  nama: string;
   created_at: string;
   updated_at: string;
 }

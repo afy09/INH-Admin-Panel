@@ -57,7 +57,7 @@ const TambahBerita = ({ dataKategori, dataUserAdmin }: { dataKategori: any; data
 
   function uploadToLaravel(file: File): Promise<string> {
     const formData = new FormData();
-    formData.append("upload", file); // ✅ sesuai API yang kamu tunjukkan
+    formData.append("upload", file);
 
     return fetch("https://inhforhumanity.org/api/news/upload-media", {
       method: "POST",
