@@ -227,13 +227,18 @@ const DetailBerita = ({ detailBerita, dataKategori, dataUserAdmin }: { detailBer
         </div>
 
         <div className="flex gap-7">
-          <div className="w-50 font-semibold">Caption</div>
-          <div className="text-[#4A4D4F] capitalize">{detailBerita?.caption}</div>
+          <div className="w-50 font-semibold">Total View</div>
+          <div className="text-[#4A4D4F] capitalize">{detailBerita?.views_count}</div>
         </div>
 
         <div className="flex gap-7">
           <div className="w-50 font-semibold">Tanggal Dibuat</div>
           <div className="text-[#4A4D4F]">{new Date(detailBerita?.created_at).toLocaleDateString()}</div>
+        </div>
+
+        <div className="flex gap-7">
+          <div className="w-50 font-semibold">Caption</div>
+          <div className="text-[#4A4D4F] capitalize">{detailBerita?.caption}</div>
         </div>
 
         <div className="flex flex-col gap-3">

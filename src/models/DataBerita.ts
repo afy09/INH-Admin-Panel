@@ -6,6 +6,7 @@ export interface ListDataBerita {
   author: string;
   created_at: string;
   update_at: string;
+  views_count: string;
 }
 
 export interface DataBerita {
@@ -13,4 +14,5 @@ export interface DataBerita {
   current_page: number;
   last_page: number;
   per_page: number;
+  total_news: number;
 }
