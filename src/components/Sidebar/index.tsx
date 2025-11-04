@@ -53,6 +53,11 @@ const menuGroups = [
         route: "/dashboard/transaksi",
       },
       {
+        icon: <FaMoneyBillTransfer size={20} />,
+        label: "Transaksi User",
+        route: "/dashboard/transaksi-user",
+      },
+      {
         icon: <FaMoneyBillTrendUp size={20} />,
         label: "Donatur",
         route: "/dashboard/donatur",
@@ -131,6 +136,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         if (dataAdmin.role === "super-admin") return true;
         if (dataAdmin.role === "Media") return ["Beranda", "Berita", "Logout"].includes(item.label);
         if (dataAdmin.role === "Fundraising") return ["Beranda", "Campaign", "Daftar Program", "Pengumuman", "Donasi Tradisional", "Logout"].includes(item.label);
+
+        if (dataAdmin.role === "super-admin-dev")
+          return [
+            "Beranda",
+            "Banner Utama",
+            "Berita",
+            "Donatur",
+            "Donasi Tradisional",
+            "Distribusi Program",
+            "Kerja Sama",
+            "Kode Tracking",
+            "Struktur Organisasi",
+            "Transaksi User",
+            "Campaign",
+            "Daftar Program",
+            "Pengumuman",
+            "Logout",
+          ].includes(item.label);
         return false;
       }),
     }))

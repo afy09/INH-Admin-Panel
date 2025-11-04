@@ -196,6 +196,7 @@ const Akun = ({ dataUserAdmin }: { dataUserAdmin: any }) => {
                   <select value={selectedEditData.role} onChange={(e) => setSelectedEditData({ ...selectedEditData, role: e.target.value })} className="bg-gray-100 outline-none px-4 py-2 w-full text-black-2 rounded-lg">
                     <option value="">-- Pilih Role --</option>
                     <option value="super-admin">Super Admin</option>
+                    <option value="super-admin-dev">Super Admin (DEV)</option>
                     <option value="Media">Media</option>
                     <option value="Fundraising">Fundraising</option>
                   </select>
