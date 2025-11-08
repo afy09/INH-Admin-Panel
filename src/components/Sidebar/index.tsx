@@ -55,7 +55,7 @@ const menuGroups = [
       {
         icon: <FaMoneyBillTransfer size={20} />,
         label: "Transaksi User",
-        route: "/dashboard/transaksi-user",
+        route: "/dashboard/transaction-user",
       },
       {
         icon: <FaMoneyBillTrendUp size={20} />,
@@ -152,6 +152,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             "Campaign",
             "Daftar Program",
             "Pengumuman",
+            "akun",
             "Logout",
           ].includes(item.label);
         return false;

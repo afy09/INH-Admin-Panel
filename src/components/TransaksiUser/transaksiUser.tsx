@@ -156,16 +156,13 @@ const TableTransaksiUser = ({ dataTransaksi, currentPage, lastPage }: { dataTran
               <tbody>
                 {dataTransaksi.map((member: any, index: number) => (
                   <tr key={member.id} className="text-center border-t hover:bg-gray-50">
-                    <td className="p-3">{index + 1}</td>
+                    <td className="p-3">{(currentPage - 1) * 10 + (index + 1)}</td>
+
                     <td className="p-3">{member.customer_name?.length > 12 ? member.customer_name.slice(0, 12) + "..." : member.customer_name}</td>
                     <td className="p-3">{member.customer_email?.length > 12 ? member.customer_email.slice(0, 12) + "..." : member.customer_email}</td>
                     <td className="p-3 truncate">{member.customer_mobile}</td>
-                    <td className="p-3 text-green-700 font-medium">
-                      {member.credit.toLocaleString("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                      })}
-                    </td>
+                    <td className="p-3 text-green-700 font-medium">Rp {Number(member.credit).toLocaleString("id-ID")}</td>
+
                     <td className="p-3">{member.payment_link_name?.length > 12 ? member.payment_link_name.slice(0, 12) + "..." : member.payment_link_name}</td>
                     <td className="p-3">
                       {new Date(member.created_at).toLocaleDateString("id-ID", {
@@ -224,11 +221,7 @@ const TableTransaksiUser = ({ dataTransaksi, currentPage, lastPage }: { dataTran
                 <strong>Program</strong> {selectedTransaksi.payment_link_name}
               </div>
               <div className="flex justify-between">
-                <strong>Jumlah</strong>{" "}
-                {selectedTransaksi.credit.toLocaleString("id-ID", {
-                  style: "currency",
-                  currency: "IDR",
-                })}
+                <strong>Jumlah</strong> Rp {Number(selectedTransaksi?.credit || 0).toLocaleString("id-ID")}
               </div>
               <div className="flex justify-end">
                 <button onClick={handleCetakPDF} className="bg-primary text-white px-3 py-2 rounded-lg mt-3 hover:bg-primary/80">
